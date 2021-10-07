@@ -1,0 +1,11 @@
+.main-footer {
+    height: 80px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    &__copyright {
+        color: var(--c-text);
+        font-size: 14px;
+    }
+}

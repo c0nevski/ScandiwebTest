@@ -10,7 +10,8 @@ const products = [
   { id:3, name: "product 3", price: "$50.00", inStock: false, image: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/107620/1358492/main-image" },
   { id:4, name: "product 4", price: "$50.00", inStock: true, image: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/107620/1358492/main-image" },
   { id:5, name: "product 5", price: "$50.00", inStock: true, image: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/107620/1358492/main-image" },
-  { id:6, name: "product 6", price: "$50.00", inStock: true, image: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/107620/1358492/main-image" }
+  { id:6, name: "product 6", price: "$50.00", inStock: true, image: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/107620/1358492/main-image" },
+  { id:7, name: "product 7", price: "$50.00", inStock: false, image: "https://collectionapi.metmuseum.org/api/collection/v1/iiif/107620/1358492/main-image" }
 ];
 
 function App() {
