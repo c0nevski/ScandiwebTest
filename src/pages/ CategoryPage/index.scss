@@ -1,0 +1,8 @@
+.homepage-section {
+    &__products-list {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-column-gap: 100px;
+        grid-row-gap: 50px;
+    }
+}
