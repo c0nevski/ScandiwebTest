@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oops... looks like you are offline</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        height: 100vh;
+        width: 100vw;
+        background-color: #f7f7f7;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      img {
+        width: 100%;
+        height: auto;
+        max-width: 700px;
+      }
+      button.reloadBtn {
+        background-color: teal;
+        padding: 5px 20px;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+        border: none;
+        transition: all .5s ease-in-out;
+      }
+      button.reloadBtn:hover {
+          cursor: pointer;
+          background-color: white;
+          color: teal;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="no-internet.png" alt="No internet connection." />
+    <button class="reloadBtn" type="button">RELOAD</button>
+    <script>
+      document.querySelector("button").addEventListener("click", () => {
+        window.location.reload();
+      });
+    </script>
+  </body>
+</html>
