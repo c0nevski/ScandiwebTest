@@ -14,6 +14,12 @@
 
             &__item {
                 margin-right: 32px;
+
+                a.nav__link--active {
+                    font-weight: 600;
+                    color: var(--c-primary);
+                    border-bottom: 2px solid var(--c-primary);
+                }
                 
 
                 a {
@@ -21,11 +27,7 @@
                     padding-bottom: 20px;
                 }
 
-                &--active a {
-                    font-weight: 600;
-                    color: var(--c-primary);
-                    border-bottom: 2px solid var(--c-primary);
-                }
+                
 
                 a:hover {
                     color: var(--c-primary);
@@ -33,7 +35,11 @@
                 }
 
             }
+
+            
         }
+
+        
 
     }
 
@@ -77,3 +83,4 @@
         
     }
 }
+

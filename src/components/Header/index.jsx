@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/logo-x512.png";
 import "./index.scss";
 
@@ -10,14 +10,14 @@ class Header extends Component {
         {/* NAVIGATION MENU */}
         <nav className="main-header__navigation">
           <ul className="nav">
-            <li className="nav__item nav__item--active">
-              <Link to="/" className="nav__link">WOMEN</Link>
+            <li className="nav__item">
+              <NavLink to="/" exact activeClassName="nav__link--active" className="nav__link">WOMEN</NavLink>
             </li>
             <li className="nav__item">
-              <Link to="/men" className="nav__link">MEN</Link>
+              <NavLink to="/men" exact activeClassName="nav__link--active" className="nav__link">MEN</NavLink>
             </li>
             <li className="nav__item">
-              <Link to="/kids" className="nav__link">KIDS</Link>
+              <NavLink to="/kids" exact activeClassName="nav__link--active" className="nav__link">KIDS</NavLink>
             </li>
           </ul>
         </nav>
