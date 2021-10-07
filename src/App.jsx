@@ -1,5 +1,5 @@
 import { Switch, Route } from "react-router-dom";
-import { KidsProducts, MenProducts, WomenProducts } from "./pages";
+import { CategoryPage } from "./pages";
 import { BoxedLayout } from "./layouts";
 import "./App.scss";
 
@@ -9,17 +9,17 @@ function App() {
       <Switch>
         <Route exact path="/">
           <BoxedLayout>
-            <WomenProducts />
+            <CategoryPage categoryName="WOMEN" />
           </BoxedLayout>
         </Route>
         <Route path="/men">
           <BoxedLayout>
-            <MenProducts />
+            <CategoryPage categoryName="MEN" />
           </BoxedLayout>
         </Route>
         <Route exact path="/kids">
           <BoxedLayout>
-            <KidsProducts />
+            <CategoryPage categoryName="KIDS" />
           </BoxedLayout>
         </Route>
       </Switch>

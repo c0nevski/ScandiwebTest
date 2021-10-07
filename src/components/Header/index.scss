@@ -14,14 +14,24 @@
 
             &__item {
                 margin-right: 32px;
+                
 
                 a {
                     color: var(--c-text);
+                    padding-bottom: 20px;
                 }
 
                 &--active a {
+                    font-weight: 600;
                     color: var(--c-primary);
+                    border-bottom: 2px solid var(--c-primary);
                 }
+
+                a:hover {
+                    color: var(--c-primary);
+                    border-bottom: 2px solid var(--c-primary);
+                }
+
             }
         }
 
