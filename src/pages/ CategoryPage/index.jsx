@@ -10,7 +10,7 @@ export class CategoryPage extends Component {
         <h2 className="category__name">{this.props.categoryName}</h2>
         <div className="homepage-section__products-list">
           {this.props.products.map((product) => {
-            return <ProductCard key={product.id} name={product.name} price={product.price} imageUri={product.image}/>;
+            return <ProductCard key={product.id} name={product.name} price={product.price} inStock={product.inStock} imageUri={product.image}/>;
           })}
         </div>
       </section>
