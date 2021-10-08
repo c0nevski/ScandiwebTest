@@ -6,8 +6,8 @@ import "./index.scss";
 class Header extends Component {
   state = {
     cart: {
-      cartItems: 2,
-      cartTotal: "$150.00",
+      cartItems: 1,
+      cartTotal: "$50.00",
       isOpen: false,
     },
   };
