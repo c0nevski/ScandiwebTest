@@ -1,0 +1,12 @@
+.footer {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    .copyright {
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--c-text);
+    }
+}
