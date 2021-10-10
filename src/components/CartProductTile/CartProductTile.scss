@@ -1,0 +1,94 @@
+.product-tile {
+  margin-bottom: 40px;
+    .col--left {
+      max-width: 130px;
+    }
+
+    &__name {
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 160%;
+      padding: 0;
+      margin: 0;
+    }
+
+    &__price {
+      padding: 0;
+      margin-top: 6px;
+      margin-bottom: 27px;
+    }
+
+    &__sizes {
+      .product-tile__btn {
+        width: 25px;
+        height: 25px;
+        border-radius: 0;
+        color: #a6a6a6;
+        background: rgba(166, 166, 166, 0.2);
+        border: 1px solid #a6a6a6;
+        font-size: 14px;
+        margin-right: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: color 0.2s ease-in-out;
+
+        &--selected {
+          background-color: #fff;
+          color: var(--c-text);
+          border-color: var(--c-text);
+        }
+
+        &:hover {
+          color: var(--c-primary);
+          border-color: var(--c-primary);
+        }
+      }
+    }
+
+    .col--right {
+      .row {
+        flex: 1;
+      }
+      .col--buttons {
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+        margin-left: 18px;
+
+        button {
+          width: 25px;
+          height: 25px;
+          border-radius: 0;
+          background-color: #fff;
+          color: var(--c-text);
+          border: 1px solid var(--c-text);
+          font-size: 18px;
+          font-weight: 300;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          transition: color 0.2s ease-in-out;
+
+          &:hover {
+            color: var(--c-primary);
+            border-color: var(--c-primary);
+          }
+        }
+      }
+
+      .col--image {
+        background-color: gainsboro;
+          width: 100px;
+          display: flex;
+          flex: 1;
+          height: 100%;
+          padding: 50px;
+          background-position: center center;
+          background-size: cover;
+          margin-left: 10px;
+      }
+    }
+  }

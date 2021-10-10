@@ -34,3 +34,17 @@ export const loadCurrentItem = (item) => {
     payload: item,
   };
 };
+
+export const toggleCart = () => {
+  return {
+    type: actionTypes.TOGGLE_CART,
+    payload: true,
+  }
+}
+
+export const toggleCurrency = () => {
+  return {
+    type: actionTypes.TOGGLE_CURRENCY,
+    payload: true,
+  }
+}
