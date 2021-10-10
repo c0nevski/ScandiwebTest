@@ -10,7 +10,7 @@ class ProductCard extends Component {
     toast.success(
       `${productName} was added to your bag.`,
     {
-      position: "top-right",
+      position: "top-left",
       pauseOnFocusLoss: false,
       pauseOnHover: false,
       closeOnClick: true,
