@@ -26,7 +26,7 @@ class Header extends Component {
     this.props.toggleCurrency();
   };
   render() {
-    const { cart, currency } = this.props;
+    const { cart, currency, categories } = this.props;
     return (
       <>
         <ToastContainer />
@@ -39,24 +39,21 @@ class Header extends Component {
                 className="header__item"
                 activeClassName="header__item--active"
               >
-                WOMEN
+                HOME
               </NavLink>
-              <NavLink
-                to="/men"
-                exact
-                className="header__item"
-                activeClassName="header__item--active"
-              >
-                MEN
-              </NavLink>
-              <NavLink
-                to="/kids"
-                exact
-                className="header__item"
-                activeClassName="header__item--active"
-              >
-                KIDS
-              </NavLink>
+              {categories.map((cat) => {
+                return (
+                  <NavLink
+                  key={`header-link-${cat.name}`}
+                    to={`/${cat.name}`}
+                    exact
+                    className="header__item"
+                    activeClassName="header__item--active"
+                  >
+                    {cat.name}
+                  </NavLink>
+                );
+              })}
             </div>
             <div className="header__logo">
               <Link to="/">
@@ -72,7 +69,7 @@ class Header extends Component {
                 <span className="material-icons-outlined">
                   {currency.isOpen ? "expand_less" : "expand_more"}
                 </span>
-                <CurrencySwitcher currency={currency}/>
+                <CurrencySwitcher currency={currency} />
               </li>
               <li className="header__action-item cart-dropdown">
                 <span
@@ -94,6 +91,7 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    categories: state.shop.categories,
     cart: state.shop.cart,
     currency: state.shop.currency,
   };

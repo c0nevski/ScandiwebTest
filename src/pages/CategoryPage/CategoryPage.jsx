@@ -5,14 +5,16 @@ import './CategoryPage.scss';
 
 class CategoryPage extends Component {
     render() {
-        const { products, categoryName } = this.props;
+        const { products, categoryName, allproducts } = this.props;
+        // IF allproducts is not defined -> display products by category, else display all products.
+        const productsByCategory = allproducts ? products : products.filter(prod => prod.category === categoryName);
         return (
             <section className="category-page">
                 <h2 className="category-page__title">
                     {categoryName}
                 </h2>
                 <div className="category-page__products">
-                    { products.map(product => {
+                    { productsByCategory.map(product => {
                         return (<ProductCard key={product.id} product={product}/>);
                     }) }
                 </div>

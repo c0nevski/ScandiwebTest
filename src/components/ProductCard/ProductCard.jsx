@@ -14,9 +14,10 @@ class ProductCard extends Component {
       pauseOnFocusLoss: false,
       pauseOnHover: false,
       closeOnClick: true,
-      autoClose: 2000,
+      autoClose: 1000,
       theme: 'colored',
       closeButton: false,
+      hideProgressBar: true,
     });
 
   addItemToCard = (product) => {
