@@ -11,7 +11,10 @@ class ProductCard extends Component {
       `${productName} was added to your bag.`,
     {
       position: "top-right",
-      autoClose: 2500,
+      pauseOnFocusLoss: false,
+      pauseOnHover: false,
+      closeOnClick: true,
+      autoClose: 2000,
       theme: 'colored',
       closeButton: false,
     });
@@ -21,12 +24,17 @@ class ProductCard extends Component {
     this.notify(product.name);
   };
 
+  productPrice = () => {
+    const productPrice = this.props.product.prices.find(price => price.currency === this.props.currency.selectedCurrency);
+    return `${productPrice.currency} ${productPrice.amount}`;
+  }
+
   render() {
     const { product } = this.props;
     return (
       <div className="product-card">
         <div className="product-card__image">
-          <img src={product.image} alt="product" />
+          <img src={product.gallery[0]} alt="product" />
           {!product.inStock && (
             <div className="product-card__image--out-of-stock">
               <h3>OUT OF STOCK</h3>
@@ -44,7 +52,7 @@ class ProductCard extends Component {
           )}
         </div>
         <h3 className="product-card__name">{product.name}</h3>
-        <h3 className="product-card__price">{product.price}</h3>
+        <h3 className="product-card__price">{this.productPrice()}</h3>
       </div>
     );
   }
@@ -54,10 +62,16 @@ ProductCard.propTypes = {
   product: PropTypes.object.isRequired,
 };
 
+const mapStateToProps = (state) => {
+  return {
+    currency: state.shop.currency,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     addToCart: (itemID) => dispatch(addToCart(itemID)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(ProductCard);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductCard);

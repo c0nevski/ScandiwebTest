@@ -4,6 +4,7 @@ import { CartProductTile } from "../index";
 import logo from "../../assets/logo-x512.png";
 import { connect } from "react-redux";
 import {
+  selectCurrency,
   toggleCart,
   toggleCurrency,
 } from "../../redux/Shopping/shopping-actions";
@@ -26,7 +27,7 @@ class Header extends Component {
     this.props.toggleCurrency();
   };
   render() {
-    const { cart, currency } = this.props;
+    const { cart, currency, selectCurrency } = this.props;
     return (
       <>
         <ToastContainer />
@@ -68,7 +69,7 @@ class Header extends Component {
                 onClick={() => this.openCurrency()}
                 className="header__action-item currency-dropdown"
               >
-                {currency.selectedCurrency.symbol}
+                {currency.selectedCurrency}
                 <span className="material-icons-outlined">
                   {currency.isOpen ? "expand_less" : "expand_more"}
                 </span>
@@ -79,9 +80,10 @@ class Header extends Component {
                       : ""
                   }`}
                 >
-                  <li className="currency-menu__item">$ USD</li>
-                  <li className="currency-menu__item">€ EUR</li>
-                  <li className="currency-menu__item">¥ JPY</li>
+                  
+                  { currency.list.map(c => {
+                    return (<li key={c} onClick={() => selectCurrency(c)} className="currency-menu__item">{c}</li>);
+                  }) }
                 </ul>
               </li>
               <li className="header__action-item cart-dropdown">
@@ -126,6 +128,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleCart: () => dispatch(toggleCart()),
     toggleCurrency: () => dispatch(toggleCurrency()),
+    selectCurrency: (currency) => dispatch(selectCurrency(currency)),
   };
 };
 

@@ -48,3 +48,10 @@ export const toggleCurrency = () => {
     payload: true,
   }
 }
+
+export const selectCurrency = (currency) => {
+  return {
+    type: actionTypes.SELECT_CURRENCY,
+    payload: currency,
+  }
+}

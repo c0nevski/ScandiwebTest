@@ -4,3 +4,4 @@ export const ADJUST_QTY = 'ADJUST_QTY';
 export const LOAD_CURRENT_ITEM = 'LOAD_CURRENT_ITEM';
 export const TOGGLE_CART = 'TOGGLE_CART';
 export const TOGGLE_CURRENCY = 'TOGGLE_CURRENCY';
+export const SELECT_CURRENCY = 'SELECT_CURRENCY';
