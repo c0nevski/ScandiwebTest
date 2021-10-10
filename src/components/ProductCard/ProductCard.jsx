@@ -3,10 +3,26 @@ import PropTypes from "prop-types";
 import "./ProductCard.scss";
 import { connect } from "react-redux";
 import { addToCart } from "../../redux/Shopping/shopping-actions";
+import { toast } from "react-toastify";
 
 class ProductCard extends Component {
+  notify = (productName) =>
+    toast.success(
+      `${productName} was added to your bag.`,
+    {
+      position: "top-right",
+      autoClose: 2500,
+      theme: 'colored',
+      closeButton: false,
+    });
+
+  addItemToCard = (product) => {
+    this.props.addToCart(product.id);
+    this.notify(product.name);
+  };
+
   render() {
-    const { product, addToCart } = this.props;
+    const { product } = this.props;
     return (
       <div className="product-card">
         <div className="product-card__image">
@@ -17,7 +33,10 @@ class ProductCard extends Component {
             </div>
           )}
           {product.inStock && (
-            <button onClick={()=> addToCart(product.id)} className="product-card__btn">
+            <button
+              onClick={() => this.addItemToCard(product)}
+              className="product-card__btn"
+            >
               <span className="material-font material-icons-outlined">
                 shopping_cart
               </span>
@@ -35,10 +54,10 @@ ProductCard.propTypes = {
   product: PropTypes.object.isRequired,
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     addToCart: (itemID) => dispatch(addToCart(itemID)),
   };
-}
+};
 
 export default connect(null, mapDispatchToProps)(ProductCard);

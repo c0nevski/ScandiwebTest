@@ -180,3 +180,12 @@
     }
   }
 }
+
+.Toastify__toast-container--top-right {
+  top: 80px;
+  right: 1em;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  background-color: var(--c-primary);
+}

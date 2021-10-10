@@ -2,6 +2,7 @@
   margin-bottom: 40px;
     .col--left {
       max-width: 130px;
+      flex-grow: 1;
     }
 
     &__name {
