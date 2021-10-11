@@ -2,7 +2,7 @@
   position: absolute;
   background-color: white;
   z-index: 9999;
-  width: 300px;
+  width: 330px;
   max-height: 80vh;
   overflow-y: scroll;
   top: 60px;
@@ -10,6 +10,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  font-family: 'Raleway';
   box-shadow: 0 4px 35px rgba(168, 172, 176, 0.19);
   cursor: default;
   display: none;
@@ -57,5 +58,43 @@
   .col {
     display: flex;
     flex-direction: column;
+  }
+
+  .cart-menu__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span {
+      font-size: 16px;
+      font-weight: 500;
+
+      &.price-bold {
+        font-weight: 700;
+      }
+    }
+  }
+
+  .cart-menu__buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    .btn {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c-text);
+      background-color: #fff;
+      border: 1px solid var(--c-text);
+      padding: 13px 32px;
+      font-family: 'Raleway';
+      text-transform: uppercase;
+      cursor: pointer;
+
+      &--checkout {
+        background-color: var(--c-primary);
+        color: #fff;
+        border: none;
+      }
+    }
   }
 }
