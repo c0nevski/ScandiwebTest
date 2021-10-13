@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom"
 
 class ProductCard extends Component {
+
   productPrice = () => {
     const productPrice = this.props.product.prices.find(price => price.currency === this.props.currency.selectedCurrency);
     return `${productPrice.currency} ${productPrice.amount}`;
