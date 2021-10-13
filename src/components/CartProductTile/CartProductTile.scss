@@ -1,5 +1,8 @@
 .product-tile {
-  margin-bottom: 40px;
+  padding-bottom: 20px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #e5e5e5;
+  
   .col--left {
     max-width: 130px;
     flex-grow: 1;
@@ -21,43 +24,47 @@
     font-size: 16px;
   }
 
-  &__sizes {
-    .product-tile__btn {
-      width: 25px;
-      height: 25px;
-      border-radius: 0;
-      color: #a6a6a6;
-      background: rgba(166, 166, 166, 0.2);
-      border: 1px solid #a6a6a6;
-      font-size: 14px;
-      margin-right: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: color 0.2s ease-in-out;
+  &__options {
+    .product-tile__option {
+      ul {
+        li {
+          margin-bottom: 10px;
 
-      &--selected {
-        background-color: #fff;
-        color: var(--c-text);
-        border-color: var(--c-text);
-      }
+          div.option--swatch {
+            width: 40px;
+            height: 20px;
+            margin-top: 5px;
+          }
 
-      &:hover {
-        color: var(--c-primary);
-        border-color: var(--c-primary);
+          span {
+            font-family: "Roboto Condensed", sans-serif;
+            color: #b3b3b3;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 5px 25px 0 0;
+            display: inline-block;
+          }
+
+          strong {
+            font-size: 14px;
+          }
+        }
       }
     }
   }
 
   .col--right {
-    .row {
-      flex: 1;
-    }
+    justify-content: center;
+    // .row {
+    //   flex: 1;
+    // }
     .col--buttons {
       justify-content: space-between;
       align-items: center;
       height: 100%;
+      min-height: 150px;
       margin-left: 18px;
 
       button {
@@ -83,7 +90,7 @@
     }
 
     .col--image {
-      background-color: gainsboro;
+      background-color: #fff;
       width: 100px;
       display: flex;
       flex: 1;
@@ -91,6 +98,7 @@
       padding: 50px;
       background-position: center center;
       background-size: contain;
+      background-repeat: no-repeat;
       margin-left: 10px;
     }
   }

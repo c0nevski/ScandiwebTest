@@ -21,45 +21,52 @@ const INITIAL_STATE = {
 const shopReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case actionTypes.SET_CATEGORIES_AND_PRODUCTS:
-      const cats = action.payload.map(cat => { return {name: cat.name} });
-      const products = action.payload.map(cat => cat.products).flat();
+      const cats = action.payload.map((cat) => {
+        return { name: cat.name };
+      });
+      const products = action.payload.map((cat) => cat.products).flat();
       return {
         ...state,
         categories: [...cats],
         products: [...products],
       };
-      case actionTypes.SET_CURRENCIES:
-        return {
-          ...state,
-          currency: {
-            ...state.currency,
-            list: action.payload,
-            selectedCurrency: action.payload[0],
-          }
-        };
+    case actionTypes.SET_CURRENCIES:
+      return {
+        ...state,
+        currency: {
+          ...state.currency,
+          list: action.payload,
+          selectedCurrency: action.payload[0],
+        },
+      };
     case actionTypes.ADD_TO_CART:
       // Get item from payload
-      const product = action.payload.id;
+      const product = action.payload;
       // Check if item is already in cart
-      const inCart = state.cart.products.find((item) =>
-        {
-          // product in cart === payload product
-          if(item.id === product.id ) {
-            // product in cart -> attributes === payload product -> attributes
-            const payloadProductAttributes = product.attributes.map(att => att.selectedVal);
-            const productInCartAttributes = item.attributes.map(att => att.selectedVal);
+      const inCart = state.cart.products.find((item) => {
+        // product in cart === payload product
+        if (item.id === product.id) {
+          // product in cart -> attributes === payload product -> attributes
+          const payloadProductAttributes = product.attributes.map(
+            (att) => att.selectedVal
+          );
+          const productInCartAttributes = item.attributes.map(
+            (att) => att.selectedVal
+          );
 
-            const attributesEqual = _.isEqual(productInCartAttributes, payloadProductAttributes);
+          const attributesEqual = _.isEqual(
+            productInCartAttributes,
+            payloadProductAttributes
+          );
 
-            if(attributesEqual) {
-              return true;
-            }
-            return false;
-          } else {
-            return false;
+          if (attributesEqual) {
+            return true;
           }
+          return false;
+        } else {
+          return false;
         }
-      );
+      });
       // Add item to cart
       return {
         ...state,
@@ -72,12 +79,38 @@ const shopReducer = (state = INITIAL_STATE, action) => {
             : [...state.cart.products, { ...product, qty: 1 }],
         },
       };
+    case actionTypes.UPDATE_ATTRIBUTES_IN_CART:
+      const updatedCartProducts = state.cart.products.map(prod => {
+        if( prod.id === action.payload.id ) {
+          return action.payload;
+        } else {
+          return prod;
+        }
+      });
+      // Update attributes
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          products: [...updatedCartProducts],
+        },
+      };
     case actionTypes.REMOVE_FROM_CART:
-      return {};
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          products: state.cart.products.filter(p => p.id !== action.payload.id ),
+        }
+      };
     case actionTypes.ADJUST_QTY:
-      return {};
-    case actionTypes.LOAD_CURRENT_ITEM:
-      return {};
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          products: state.cart.products.map(p => p.id === action.payload.id ? { ...p, qty: action.payload.qty } : p),
+        }
+      };
     case actionTypes.TOGGLE_CART:
       return {
         ...state,

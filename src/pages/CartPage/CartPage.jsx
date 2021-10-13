@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import iconEmptyCart from "../../assets/icon-empty-cart.png";
+import { EmptyCart, FullCartProductTile } from "../../components";
 import "./CartPage.scss";
 
 class CartPage extends Component {
+
   getCartTotal = () => {
     const currency = this.props.currency.selectedCurrency;
     const totalAmount = this.props.cart.products.reduce((total, product) => {
@@ -18,10 +19,21 @@ class CartPage extends Component {
   };
 
   render() {
+    const { cart } = this.props;
+
+    if (cart.products.length === 0) return <EmptyCart />;
+
     return (
       <section className="cart-page">
-        <h2>Cart</h2>
-
+        <h2 className="cart-page__title">Cart</h2>
+        {cart.products.map((product) => {
+          return <FullCartProductTile key={product.id} product={product} />;
+        })}
+        <div className="cart-page__total">
+          <button className="cart-page__checkout cart-page__checkout--btn">
+            CHECKOUT
+          </button>
+        </div>
       </section>
     );
   }
