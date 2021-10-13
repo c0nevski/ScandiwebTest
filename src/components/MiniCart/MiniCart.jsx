@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { CartProductTile } from '../index'
 import './MiniCart.scss';
 
@@ -25,8 +26,8 @@ class MiniCart extends Component {
         <h2>
           <strong>My Bag,</strong> {this.props.cart.products.length} items
         </h2>
-        {this.props.cart.products.map((product) => {
-          return <CartProductTile key={product.id} product={product} />;
+        {this.props.cart.products.map((product, index) => {
+          return <CartProductTile key={`${product.id}-${index}`} product={product} />;
         })}
         <div className="cart-menu__total">
           <span>Total</span>
@@ -41,4 +42,11 @@ class MiniCart extends Component {
   }
 }
 
-export default MiniCart;
+const mapStateToProps = (state) => {
+  return {
+    cart: state.shop.cart,
+    currency: state.shop.currency,
+  };
+};
+
+export default connect(mapStateToProps)(MiniCart);

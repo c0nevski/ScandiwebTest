@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import "./ProductCard.scss";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom"
 import { addToCart } from "../../redux/Shopping/shopping-actions";
 import { toast } from "react-toastify";
 
@@ -33,7 +34,7 @@ class ProductCard extends Component {
   render() {
     const { product } = this.props;
     return (
-      <div className="product-card">
+      <Link to={`/product/${product.id}`} className="product-card">
         <div className="product-card__image">
           <img src={product.gallery[0]} alt="product" />
           {!product.inStock && (
@@ -54,7 +55,7 @@ class ProductCard extends Component {
         </div>
         <h3 className="product-card__name">{product.name}</h3>
         <h3 className="product-card__price">{this.productPrice()}</h3>
-      </div>
+      </Link>
     );
   }
 }
