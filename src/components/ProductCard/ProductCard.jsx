@@ -3,29 +3,8 @@ import PropTypes from "prop-types";
 import "./ProductCard.scss";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom"
-import { addToCart } from "../../redux/Shopping/shopping-actions";
-import { toast } from "react-toastify";
 
 class ProductCard extends Component {
-  notify = (productName) =>
-    toast.success(
-      `${productName} was added to your bag.`,
-    {
-      position: "top-left",
-      pauseOnFocusLoss: false,
-      pauseOnHover: false,
-      closeOnClick: true,
-      autoClose: 1000,
-      theme: 'colored',
-      closeButton: false,
-      hideProgressBar: true,
-    });
-
-  addItemToCard = (product) => {
-    this.props.addToCart(product.id);
-    this.notify(product.name);
-  };
-
   productPrice = () => {
     const productPrice = this.props.product.prices.find(price => price.currency === this.props.currency.selectedCurrency);
     return `${productPrice.currency} ${productPrice.amount}`;
@@ -34,7 +13,7 @@ class ProductCard extends Component {
   render() {
     const { product } = this.props;
     return (
-      <Link to={`/product/${product.id}`} className="product-card">
+      <div to={`/product/${product.id}`} className="product-card">
         <div className="product-card__image">
           <img src={product.gallery[0]} alt="product" />
           {!product.inStock && (
@@ -43,19 +22,19 @@ class ProductCard extends Component {
             </div>
           )}
           {product.inStock && (
-            <button
-              onClick={() => this.addItemToCard(product)}
+            <Link
+              to={`/product/${product.id}`}
               className="product-card__btn"
             >
               <span className="material-font material-icons-outlined">
                 shopping_cart
               </span>
-            </button>
+            </Link>
           )}
         </div>
         <h3 className="product-card__name">{product.name}</h3>
         <h3 className="product-card__price">{this.productPrice()}</h3>
-      </Link>
+      </div>
     );
   }
 }
@@ -70,10 +49,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addToCart: (itemID) => dispatch(addToCart(itemID)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductCard);
+export default connect(mapStateToProps)(ProductCard);

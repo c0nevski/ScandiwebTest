@@ -15,7 +15,9 @@ class ProductPage extends Component {
   };
 
   componentDidMount() {
-    const product = this.props.products.find(p => p.id === this.props.match.params.id);
+    const product = this.props.products.find(
+      (p) => p.id === this.props.match.params.id
+    );
     this.setState({
       product: product,
       selectedImage: product.gallery[0],
@@ -30,8 +32,8 @@ class ProductPage extends Component {
   };
 
   selectProductAttribute = (attributeId, selectedValue) => {
-    const updatedAttributes = this.state.attributes.map(att => {
-      if(att.id === attributeId) {
+    const updatedAttributes = this.state.attributes.map((att) => {
+      if (att.id === attributeId) {
         return {
           ...att,
           selectedVal: selectedValue,
@@ -39,44 +41,62 @@ class ProductPage extends Component {
       } else {
         return att;
       }
-    })
+    });
 
     this.setState({
       attributes: updatedAttributes,
     });
   };
 
-  notifyWarning = (attributeName) => {
-    toast.warning(
-      `You need to select product ${attributeName}`,
-    {
+  showBannerNotification = (text, type) => {
+    const toastOptions = {
       position: "top-right",
       pauseOnFocusLoss: false,
       pauseOnHover: false,
       closeOnClick: true,
       autoClose: 3000,
-      theme: 'colored',
+      theme: "colored",
       closeButton: false,
       hideProgressBar: true,
-    });
-  }
+    };
+    switch (type) {
+      case "warning":
+        toast.warning(text, toastOptions);
+        break;
+      case "success":
+        toast.success(text, toastOptions);
+        break;
+      default:
+        break;
+    }
+  };
 
   beforeAddToCart = () => {
-    const allSelected = this.state.attributes.every( att => att.selectedVal != null);
-    if( allSelected ) {
-      const productToCart = {...this.state.product, attributes: this.state.attributes};
+    const allSelected = this.state.attributes.every(
+      (att) => att.selectedVal != null
+    );
+    if (allSelected) {
+      const productToCart = {
+        ...this.state.product,
+        attributes: this.state.attributes,
+      };
       this.props.addToCart(productToCart);
+      this.showBannerNotification(`You have added ${productToCart.name} to your bag`, 'success');
     } else {
-      const notSelected = this.state.attributes.find(att => att.selectedVal == null);
-      this.notifyWarning(notSelected.name);
+      const notSelected = this.state.attributes.find(
+        (att) => att.selectedVal == null
+      );
+      this.showBannerNotification(`Please select ${notSelected.name} option`, 'warning');
     }
-  }
+  };
 
   displayProductPrice = () => {
     const currency = this.props.currency.selectedCurrency;
-    const price = this.state.product.prices.find(price => price.currency === currency);
-    return `${currency} ${price.amount}`
-  }
+    const price = this.state.product.prices.find(
+      (price) => price.currency === currency
+    );
+    return `${currency} ${price.amount}`;
+  };
 
   render() {
     if (this.state.product === null) return <Loader />;
@@ -105,18 +125,54 @@ class ProductPage extends Component {
           {this.state.attributes.map((attrib) => {
             return (
               <div key={attrib.id} className="product-info__attributes">
-                <div className="attributes__title">
-                  {attrib.name}:
-                </div>
+                <div className="attributes__title">{attrib.name}:</div>
                 <div className="attributes__options">
-                  {
-                    attrib.items.map(item => {
-                      if(attrib.type === 'swatch') {
-                        return (<button key={item.id} onClick={() => this.selectProductAttribute(attrib.id, item.displayValue)} className={`option option--swatch ${attrib.selectedVal === item.displayValue ? 'option--selected' : ''}`} style={{ backgroundColor: `${item.value}`, opacity: `${attrib.selectedVal === item.displayValue ? '1' : '0.3'}` }}></button>);
-                      }
-                      return (<button key={item.id} onClick={() => this.selectProductAttribute(attrib.id, item.displayValue)} className={`option ${attrib.selectedVal === item.displayValue ? 'option--selected' : ''}`}>{item.displayValue}</button>);
-                    })
-                  }
+                  {attrib.items.map((item) => {
+                    if (attrib.type === "swatch") {
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() =>
+                            this.selectProductAttribute(
+                              attrib.id,
+                              item.displayValue
+                            )
+                          }
+                          className={`option option--swatch ${
+                            attrib.selectedVal === item.displayValue
+                              ? "option--selected"
+                              : ""
+                          }`}
+                          style={{
+                            backgroundColor: `${item.value}`,
+                            opacity: `${
+                              attrib.selectedVal === item.displayValue
+                                ? "1"
+                                : "0.3"
+                            }`,
+                          }}
+                        ></button>
+                      );
+                    }
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() =>
+                          this.selectProductAttribute(
+                            attrib.id,
+                            item.displayValue
+                          )
+                        }
+                        className={`option ${
+                          attrib.selectedVal === item.displayValue
+                            ? "option--selected"
+                            : ""
+                        }`}
+                      >
+                        {item.displayValue}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             );
@@ -126,7 +182,12 @@ class ProductPage extends Component {
             <h3 className="price__amount">{this.displayProductPrice()}</h3>
           </div>
           <div className="product-info__add-to-cart">
-            <button onClick={() => this.beforeAddToCart()} className="btn-add-to-cart">ADD TO CART</button>
+            <button
+              onClick={() => this.beforeAddToCart()}
+              className="btn-add-to-cart"
+            >
+              ADD TO CART
+            </button>
           </div>
           <div className="product-info__description">
             {parse(this.state.product.description)}

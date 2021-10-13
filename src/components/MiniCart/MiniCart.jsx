@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { CartProductTile } from '../index'
+import iconEmptyCart from "../../assets/icon-empty-cart.png";
 import './MiniCart.scss';
+import { Link } from "react-router-dom";
+import { toggleCart } from "../../redux/Shopping/shopping-actions";
 
 class MiniCart extends Component {
 
@@ -26,6 +29,7 @@ class MiniCart extends Component {
         <h2>
           <strong>My Bag,</strong> {this.props.cart.products.length} items
         </h2>
+        { this.props.cart.products.length === 0 && <img src={iconEmptyCart} className="empty-cart-icon" alt="Your cart is empty." /> }
         {this.props.cart.products.map((product, index) => {
           return <CartProductTile key={`${product.id}-${index}`} product={product} />;
         })}
@@ -34,7 +38,7 @@ class MiniCart extends Component {
           <span className="price-bold">{this.getCartTotal()}</span>
         </div>
         <div className="cart-menu__buttons">
-          <button className="btn btn--view-bag">View bag</button>
+          <Link to="/cart" onClick={() => this.props.toggleCart()} className="btn btn--view-bag">View bag</Link>
           <button className="btn btn--checkout">Checkout</button>
         </div>
       </div>
@@ -49,4 +53,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(MiniCart);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleCart: () => dispatch(toggleCart()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MiniCart);

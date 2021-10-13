@@ -15,23 +15,11 @@
   cursor: default;
   display: none;
 
-  //   &::-webkit-scrollbar {
-  //     -webkit-appearance: none;
-  // }
+  img.empty-cart-icon {
+    max-width: 200px;
+    margin: 0 auto 20px auto;
+  }
 
-  // &::-webkit-scrollbar:vertical {
-  //     width: 11px;
-  // }
-
-  // &::-webkit-scrollbar:horizontal {
-  //     height: 11px;
-  // }
-
-  // &::-webkit-scrollbar-thumb {
-  //     border-radius: 8px;
-  //     border: 2px solid white; /* should match background, can't be transparent */
-  //     background-color: rgba(0, 0, 0, .5);
-  // }
 
   &--open {
     display: flex;
