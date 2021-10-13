@@ -80,7 +80,7 @@ class Header extends Component {
                   shopping_cart
                   <span className="badge">{cart.products.length}</span>
                 </span>
-                <MiniCart cart={cart} currency={currency} />
+                <MiniCart />
               </li>
             </ul>
           </div>

@@ -5,7 +5,7 @@ import { GraphqlClientContext } from "./graphQL/graphql-context";
 import { categoriesWithProductsQuery, currenciesQuery } from "./graphQL/graphql-queries";
 import { Footer, Header, Loader, NoProductsFound } from "./components";
 import "./App.scss";
-import { CategoryPage, PageNotFound } from "./pages";
+import { CategoryPage, PageNotFound, ProductPage } from "./pages";
 import {
   setCategories,
   setCurrencies,
@@ -91,6 +91,9 @@ class App extends Component {
                   </Route>
                 );
               })}
+              <Route path="/product/:id">
+                <ProductPage />
+              </Route>
               <Route>
                 <PageNotFound />
               </Route>

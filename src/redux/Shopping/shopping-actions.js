@@ -1,10 +1,10 @@
 import * as actionTypes from "./shopping-types";
 
-export const addToCart = (itemID) => {
+export const addToCart = (product) => {
   return {
     type: actionTypes.ADD_TO_CART,
     payload: {
-      id: itemID,
+      id: product,
     },
   };
 };

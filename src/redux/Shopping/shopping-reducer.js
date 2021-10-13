@@ -1,4 +1,5 @@
 import * as actionTypes from "./shopping-types";
+import _ from "lodash";
 
 // MOCK PRODUCT DATA
 const INITIAL_STATE = {
@@ -37,13 +38,27 @@ const shopReducer = (state = INITIAL_STATE, action) => {
           }
         };
     case actionTypes.ADD_TO_CART:
-      // Get item from products array
-      const item = state.products.find(
-        (product) => product.id === action.payload.id
-      );
+      // Get item from payload
+      const product = action.payload.id;
       // Check if item is already in cart
       const inCart = state.cart.products.find((item) =>
-        item.id === action.payload.id ? true : false
+        {
+          // product in cart === payload product
+          if(item.id === product.id ) {
+            // product in cart -> attributes === payload product -> attributes
+            const payloadProductAttributes = product.attributes.map(att => att.selectedVal);
+            const productInCartAttributes = item.attributes.map(att => att.selectedVal);
+
+            const attributesEqual = _.isEqual(productInCartAttributes, payloadProductAttributes);
+
+            if(attributesEqual) {
+              return true;
+            }
+            return false;
+          } else {
+            return false;
+          }
+        }
       );
       // Add item to cart
       return {
@@ -52,9 +67,9 @@ const shopReducer = (state = INITIAL_STATE, action) => {
           ...state.cart,
           products: inCart
             ? state.cart.products.map((p) =>
-                p.id === action.payload.id ? { ...p, qty: p.qty + 1 } : p
+                p.id === product.id ? { ...p, qty: p.qty + 1 } : p
               )
-            : [...state.cart.products, { ...item, qty: 1 }],
+            : [...state.cart.products, { ...product, qty: 1 }],
         },
       };
     case actionTypes.REMOVE_FROM_CART:
