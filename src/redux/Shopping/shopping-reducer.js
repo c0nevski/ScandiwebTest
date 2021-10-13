@@ -1,21 +1,17 @@
 import * as actionTypes from "./shopping-types";
-import { productsClothes, productsTech } from './initial_state_mock';
 
 // MOCK PRODUCT DATA
 const INITIAL_STATE = {
-  categories: [{ name: "clothes" }, { name: "tech" }],
-  products: [
-    ...productsClothes,
-    ...productsTech,
-  ],
+  categories: [],
+  products: [],
   cart: {
-    priceTotal: "$100.00",
+    priceTotal: 0,
     products: [],
     isOpen: false,
   },
   currency: {
-    list: ["USD", "GBP", "AUD", "JPY", "RUB"],
-    selectedCurrency: "USD",
+    list: [],
+    selectedCurrency: "",
     isOpen: false,
   },
   currentItem: null,
@@ -23,6 +19,23 @@ const INITIAL_STATE = {
 
 const shopReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case actionTypes.SET_CATEGORIES_AND_PRODUCTS:
+      const cats = action.payload.map(cat => { return {name: cat.name} });
+      const products = action.payload.map(cat => cat.products).flat();
+      return {
+        ...state,
+        categories: [...cats],
+        products: [...products],
+      };
+      case actionTypes.SET_CURRENCIES:
+        return {
+          ...state,
+          currency: {
+            ...state.currency,
+            list: action.payload,
+            selectedCurrency: action.payload[0],
+          }
+        };
     case actionTypes.ADD_TO_CART:
       // Get item from products array
       const item = state.products.find(

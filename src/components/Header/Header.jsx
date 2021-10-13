@@ -54,6 +54,7 @@ class Header extends Component {
                   </NavLink>
                 );
               })}
+              <Link to="/404" className="header__item">404</Link>
             </div>
             <div className="header__logo">
               <Link to="/">
@@ -79,7 +80,7 @@ class Header extends Component {
                   shopping_cart
                   <span className="badge">{cart.products.length}</span>
                 </span>
-                <MiniCart cart={cart} />
+                <MiniCart cart={cart} currency={currency} />
               </li>
             </ul>
           </div>

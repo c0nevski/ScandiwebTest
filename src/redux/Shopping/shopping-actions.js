@@ -39,19 +39,35 @@ export const toggleCart = () => {
   return {
     type: actionTypes.TOGGLE_CART,
     payload: true,
-  }
-}
+  };
+};
 
 export const toggleCurrency = () => {
   return {
     type: actionTypes.TOGGLE_CURRENCY,
     payload: true,
-  }
-}
+  };
+};
 
 export const selectCurrency = (currency) => {
   return {
     type: actionTypes.SELECT_CURRENCY,
     payload: currency,
-  }
-}
+  };
+};
+
+// CATEGORIES
+export const setCategories = (categories) => {
+  return {
+    type: actionTypes.SET_CATEGORIES_AND_PRODUCTS,
+    payload: categories,
+  };
+};
+
+// CURRENCIES
+export const setCurrencies = (currencies) => {
+  return {
+    type: actionTypes.SET_CURRENCIES,
+    payload: currencies,
+  };
+};
