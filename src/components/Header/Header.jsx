@@ -54,7 +54,7 @@ class Header extends Component {
                   </NavLink>
                 );
               })}
-              <Link to="/404" className="header__item">404</Link>
+              {/* <Link to="/404" className="header__item">404</Link> */}
             </div>
             <div className="header__logo">
               <Link to="/">
