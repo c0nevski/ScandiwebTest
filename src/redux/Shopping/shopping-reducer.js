@@ -44,25 +44,11 @@ const shopReducer = (state = INITIAL_STATE, action) => {
       const product = action.payload;
       // Check if item is already in cart
       const inCart = state.cart.products.find((item) => {
+        const equalId = item.id === product.id;
+        const equalAttributes = _.isEqual(item.attributes,product.attributes);
         // product in cart === payload product
-        if (item.id === product.id) {
-          // product in cart -> attributes === payload product -> attributes
-          const payloadProductAttributes = product.attributes.map(
-            (att) => att.selectedVal
-          );
-          const productInCartAttributes = item.attributes.map(
-            (att) => att.selectedVal
-          );
-
-          const attributesEqual = _.isEqual(
-            productInCartAttributes,
-            payloadProductAttributes
-          );
-
-          if (attributesEqual) {
-            return true;
-          }
-          return false;
+        if (equalId && equalAttributes) {
+          return true;
         } else {
           return false;
         }
@@ -74,7 +60,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
           ...state.cart,
           products: inCart
             ? state.cart.products.map((p) =>
-                p.id === product.id ? { ...p, qty: p.qty + 1 } : p
+                _.isEqual(p.attributes, product.attributes) ? { ...p, qty: p.qty + 1 } : p
               )
             : [...state.cart.products, { ...product, qty: 1 }],
         },

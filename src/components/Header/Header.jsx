@@ -64,6 +64,14 @@ class Header extends Component {
     } else return;
   };
 
+  cartProductsQuantity = () => {
+    const qty = this.props.cart.products.reduce((total, product) => {
+      const qty = product.qty;
+      return total + qty;
+    }, 0);
+    return qty;
+  }
+
   render() {
     const { cart, currency, categories } = this.props;
     return (
@@ -117,7 +125,7 @@ class Header extends Component {
                   className="material-icons-outlined"
                 >
                   shopping_cart
-                  <span className="badge">{cart.products.length}</span>
+                  <span className="badge">{this.cartProductsQuantity()}</span>
                 </span>
                 <MiniCart refs={this.cartRef}/>
               </li>
