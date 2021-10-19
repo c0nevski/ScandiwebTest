@@ -26,8 +26,8 @@ class CartPage extends Component {
     return (
       <section className="cart-page">
         <h2 className="cart-page__title">Cart</h2>
-        {cart.products.map((product) => {
-          return <FullCartProductTile key={product.id} product={product} />;
+        {cart.products.map((product, index) => {
+          return <FullCartProductTile key={`${product.id}-${index}`} product={product} />;
         })}
         <div className="cart-page__total">
           <button className="cart-page__checkout cart-page__checkout--btn">

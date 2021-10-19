@@ -73,27 +73,18 @@ class Header extends Component {
   }
 
   render() {
-    const { cart, currency, categories } = this.props;
+    const { currency, categories } = this.props;
     return (
       <>
         <ToastContainer />
         <header className="header">
           <div className="header__container">
             <div className="header__categories">
-              <NavLink
-                to="/"
-                exact
-                className="header__item"
-                activeClassName="header__item--active"
-              >
-                HOME
-              </NavLink>
               {categories.map((cat) => {
                 return (
                   <NavLink
                     key={`header-link-${cat.name}`}
                     to={`/${cat.name}`}
-                    exact
                     className="header__item"
                     activeClassName="header__item--active"
                   >

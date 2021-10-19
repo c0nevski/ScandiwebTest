@@ -1,8 +1,11 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { GraphqlClientContext } from "./graphQL/graphql-context";
-import { categoriesWithProductsQuery, currenciesQuery } from "./graphQL/graphql-queries";
+import {
+  categoriesQuery,
+  currenciesQuery,
+} from "./graphQL/graphql-queries";
 import { Footer, Header, Loader, NoProductsFound } from "./components";
 import "./App.scss";
 import { CartPage, CategoryPage, PageNotFound, ProductPage } from "./pages";
@@ -22,15 +25,15 @@ class App extends Component {
 
   componentDidMount() {
     const opusClient = this.context;
-    this.getDataFromServer(opusClient);
+    this.getCategories(opusClient);
   }
 
-  getDataFromServer = async (client) => {
+  getCategories = async (client) => {
     try {
       this.setState({
         isLoading: true,
       });
-      const { categories } = await client.post(categoriesWithProductsQuery);
+      const { categories } = await client.post(categoriesQuery);
       const { currencies } = await client.post(currenciesQuery);
       this.props.setCategories(categories);
       this.props.setCurrencies(currencies);
@@ -44,8 +47,7 @@ class App extends Component {
   };
 
   render() {
-    const { products, categories, cart} =
-      this.props;
+    const { categories, cart } = this.props;
 
     if (this.state.isLoading) return <Loader />;
     return (
@@ -56,12 +58,12 @@ class App extends Component {
             cart.isOpen ? "app__container--cart-open" : ""
           }`}
         >
-          {products.length === 0 ? (
+          {categories.length === 0 ? (
             <NoProductsFound />
           ) : (
             <Switch>
               <Route exact path="/">
-                <CategoryPage categoryName="ALL PRODUCTS" allproducts />
+                <Redirect to={`/${categories[0].name}`} />
               </Route>
               {categories.map((cat) => {
                 return (
@@ -91,7 +93,6 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     categories: state.shop.categories,
-    products: state.shop.products,
     cart: state.shop.cart,
     currency: state.shop.currency,
   };

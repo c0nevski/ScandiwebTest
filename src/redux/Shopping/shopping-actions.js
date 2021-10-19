@@ -16,10 +16,13 @@ export const removeFromCart = (product) => {
   };
 };
 
-export const updateAttributesInCart = (cartProduct) => {
+export const updateAttributesInCart = (cartProduct, oldProduct) => {
   return {
     type: actionTypes.UPDATE_ATTRIBUTES_IN_CART,
-    payload: cartProduct,
+    payload: {
+      newProduct: cartProduct,
+      oldProduct: oldProduct,
+    },
   };
 };
 

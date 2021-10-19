@@ -1,32 +1,56 @@
-import React, { Component } from 'react';
-import { ProductCard } from '../../components';
-import { connect } from 'react-redux';
-import './CategoryPage.scss';
+import React, { Component } from "react";
+import { Loader, ProductCard } from "../../components";
+import "./CategoryPage.scss";
+import { GraphqlClientContext } from "../../graphQL/graphql-context";
+import { getCategoryByNameQuery } from "../../graphQL/graphql-queries";
+import { withRouter } from "react-router";
 
 class CategoryPage extends Component {
-    render() {
-        const { products, categoryName, allproducts } = this.props;
-        // IF allproducts is not defined -> display products by category, else display all products.
-        const productsByCategory = allproducts ? products : products.filter(prod => prod.category === categoryName);
-        return (
-            <section className="category-page">
-                <h2 className="category-page__title">
-                    {categoryName}
-                </h2>
-                <div className="category-page__products">
-                    { productsByCategory.map(product => {
-                        return (<ProductCard key={product.id} product={product}/>);
-                    }) }
-                </div>
-            </section>
-        )
+  static contextType = GraphqlClientContext;
+
+  state = {
+      category: null,
+      isLoading: false,
+  }
+
+  componentDidMount() {
+    this.fetchCategoryWithProducts(this.props.categoryName);
+  }
+
+  fetchCategoryWithProducts = async (categoryName) => {
+    const opusClient = this.context;
+    try {
+      this.setState({
+        isLoading: true,
+      });
+      const { category } = await opusClient.post(getCategoryByNameQuery(categoryName));
+      this.setState({
+        category: category,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.setState({
+        isLoading: false,
+      });
     }
+    console.log(this.state);
+  };
+
+  render() {
+    const { categoryName } = this.props;
+    if(this.state.category === null) return <Loader />;
+    return (
+      <section className="category-page">
+        <h2 className="category-page__title">{categoryName}</h2>
+        <div className="category-page__products">
+          {this.state.category.products?.map((product) => {
+            return <ProductCard key={product.id} product={product} />;
+          })}
+        </div>
+      </section>
+    );
+  }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        products: state.shop.products,
-    }
-}
-
-export default connect(mapStateToProps)(CategoryPage);
+export default withRouter(CategoryPage);

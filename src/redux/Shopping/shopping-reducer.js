@@ -67,8 +67,10 @@ const shopReducer = (state = INITIAL_STATE, action) => {
       };
     case actionTypes.UPDATE_ATTRIBUTES_IN_CART:
       const updatedCartProducts = state.cart.products.map(prod => {
-        if( prod.id === action.payload.id ) {
-          return action.payload;
+        const findProduct = _.isEqual(prod.attributes, action.payload.oldProduct.attributes);
+        console.log(findProduct);
+        if( findProduct ) {
+          return action.payload.newProduct;
         } else {
           return prod;
         }

@@ -6,8 +6,12 @@ import parse from "html-react-parser";
 import { Loader } from "../../components";
 import { toast } from "react-toastify";
 import "./ProductPage.scss";
+import { getProductByIdQuery } from "../../graphQL/graphql-queries";
+import { GraphqlClientContext } from "../../graphQL/graphql-context";
 
 class ProductPage extends Component {
+  static contextType = GraphqlClientContext;
+
   state = {
     product: null,
     selectedImage: null,
@@ -15,15 +19,29 @@ class ProductPage extends Component {
   };
 
   componentDidMount() {
-    const product = this.props.products.find(
-      (p) => p.id === this.props.match.params.id
-    );
-    this.setState({
-      product: product,
-      selectedImage: product.gallery[0],
-      attributes: product.attributes,
-    });
+    this.fetchProduct(this.props.match.params.id);
   }
+
+  fetchProduct = async (productId) => {
+    const opusClient = this.context;
+    try {
+      this.setState({
+        isLoading: true,
+      });
+      const { product } = await opusClient.post(getProductByIdQuery(productId));
+      this.setState({
+        product: product,
+        selectedImage: product.gallery[0],
+        attributes: product.attributes,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.setState({
+        isLoading: false,
+      });
+    }
+  };
 
   selectProductImage = (image) => {
     this.setState({
@@ -81,12 +99,18 @@ class ProductPage extends Component {
         attributes: this.state.attributes,
       };
       this.props.addToCart(productToCart);
-      this.showBannerNotification(`You have added ${productToCart.name} to your bag`, 'success');
+      this.showBannerNotification(
+        `You have added ${productToCart.name} to your bag`,
+        "success"
+      );
     } else {
       const notSelected = this.state.attributes.find(
         (att) => att.selectedVal == null
       );
-      this.showBannerNotification(`Please select ${notSelected.name} option`, 'warning');
+      this.showBannerNotification(
+        `Please select ${notSelected.name} option`,
+        "warning"
+      );
     }
   };
 
@@ -182,12 +206,20 @@ class ProductPage extends Component {
             <h3 className="price__amount">{this.displayProductPrice()}</h3>
           </div>
           <div className="product-info__add-to-cart">
-            <button
-              onClick={() => this.beforeAddToCart()}
-              className="btn-add-to-cart"
-            >
-              ADD TO CART
-            </button>
+            {this.state.product.inStock ? (
+              <button
+                onClick={() => this.beforeAddToCart()}
+                className="btn-add-to-cart"
+              >
+                ADD TO CART
+              </button>
+            ) : (
+              <>
+                <button className="btn-add-to-cart btn-add-to-cart--out-of-stock">
+                  OUT OF STOCK
+                </button>
+              </>
+            )}
           </div>
           <div className="product-info__description">
             {parse(this.state.product.description)}

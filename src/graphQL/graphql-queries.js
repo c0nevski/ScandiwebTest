@@ -5,6 +5,31 @@ import { Field, Query } from "@tilework/opus";
 // GET CATEGORIES
 export const categoriesQuery = new Query("categories", true).addField("name");
 
+// GET CATEGORY BY NAME
+export const getCategoryByNameQuery = (categoryName) => {
+  return new Query("category")
+    .addArgument("input", "CategoryInput", { title: categoryName})
+    .addFieldList([
+      "name",
+      new Field("products").addFieldList([
+        "id",
+        "name",
+        "inStock",
+        "gallery",
+        "description",
+        "category",
+        new Field("attributes").addFieldList([
+          "id",
+          "name",
+          "type",
+          new Field("items").addFieldList(["id", "displayValue", "value"]),
+        ]),
+        new Field("prices").addFieldList(["currency", "amount"]),
+        "brand",
+      ])
+    ]);
+};
+
 // GET CATEGORIES WITH PRODUCTS
 export const categoriesWithProductsQuery = new Query("categories", true)
   .addField("name")
@@ -31,6 +56,23 @@ export const categoriesWithProductsQuery = new Query("categories", true)
 export const currenciesQuery = new Query("currencies", true);
 
 // GET PRODUCT BY ID
-export const getProductByIdQuery = new Query("product")
-  .addArgument("id", "string", "huarache-x-stussy-le")
-  .addFieldList(["id", "name"]);
+export const getProductByIdQuery = (productId) => {
+  return new Query("product")
+    .addArgument("id", "String!", productId)
+    .addFieldList([
+      "id",
+      "name",
+      "inStock",
+      "gallery",
+      "description",
+      "category",
+      new Field("attributes").addFieldList([
+        "id",
+        "name",
+        "type",
+        new Field("items").addFieldList(["id", "displayValue", "value"]),
+      ]),
+      new Field("prices").addFieldList(["currency", "amount"]),
+      "brand",
+    ]);
+};
