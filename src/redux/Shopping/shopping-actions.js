@@ -7,11 +7,11 @@ export const addToCart = (product) => {
   };
 };
 
-export const removeFromCart = (productID) => {
+export const removeFromCart = (product) => {
   return {
     type: actionTypes.REMOVE_FROM_CART,
     payload: {
-      id: productID,
+      product: product,
     },
   };
 };
@@ -23,11 +23,11 @@ export const updateAttributesInCart = (cartProduct) => {
   };
 };
 
-export const adjustQty = (itemID, value) => {
+export const adjustQty = (item, value) => {
   return {
     type: actionTypes.ADJUST_QTY,
     payload: {
-      id: itemID,
+      product: item,
       qty: value,
     },
   };

@@ -22,6 +22,7 @@ class MiniCart extends Component {
   render() {
     return (
       <div
+      ref={this.props.refs}
         className={`cart-dropdown__cart-menu ${
           this.props.cart.isOpen ? "cart-dropdown__cart-menu--open" : ""
         }`}

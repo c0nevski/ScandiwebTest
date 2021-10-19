@@ -43,21 +43,8 @@ class App extends Component {
     }
   };
 
-  closeCartAndCurrencyIfOpen = (
-    cartIsOpen,
-    currencyIsOpen,
-    toggleCart,
-    toggleCurrency
-  ) => {
-    if (cartIsOpen) {
-      toggleCart();
-    } else if (currencyIsOpen) {
-      toggleCurrency();
-    } else return;
-  };
-
   render() {
-    const { products, categories, cart, currency, toggleCart, toggleCurrency } =
+    const { products, categories, cart} =
       this.props;
 
     if (this.state.isLoading) return <Loader />;
@@ -65,14 +52,6 @@ class App extends Component {
       <div className="app">
         <Header />
         <div
-          onClick={() =>
-            this.closeCartAndCurrencyIfOpen(
-              cart.isOpen,
-              currency.isOpen,
-              toggleCart,
-              toggleCurrency
-            )
-          }
           className={`app__container ${
             cart.isOpen ? "app__container--cart-open" : ""
           }`}

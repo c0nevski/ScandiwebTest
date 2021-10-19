@@ -100,7 +100,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         ...state,
         cart: {
           ...state.cart,
-          products: state.cart.products.filter(p => p.id !== action.payload.id ),
+          products: state.cart.products.filter(p => !_.isEqual(p, action.payload.product) ),
         }
       };
     case actionTypes.ADJUST_QTY:
@@ -108,7 +108,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         ...state,
         cart: {
           ...state.cart,
-          products: state.cart.products.map(p => p.id === action.payload.id ? { ...p, qty: action.payload.qty } : p),
+          products: state.cart.products.map(p => _.isEqual(p, action.payload.product) ? { ...p, qty: action.payload.qty } : p),
         }
       };
     case actionTypes.TOGGLE_CART:
