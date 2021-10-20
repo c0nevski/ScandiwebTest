@@ -9,14 +9,14 @@ import { toggleCart } from "../../redux/Shopping/shopping-actions";
 class MiniCart extends Component {
 
   getCartTotal = () => {
-    const currency = this.props.currency.selectedCurrency;
+    const currency = this.props.currency.list.find(c => c.name === this.props.currency.selectedCurrency);
     const totalAmount = this.props.cart.products.reduce((total, product) => {
       const qty = product.qty;
-      const productPrice = product.prices.find(price => price.currency === currency);
+      const productPrice = product.prices.find(price => price.currency === this.props.currency.selectedCurrency);
       return total + (productPrice.amount * qty);
     }, 0);
 
-    return `${currency} ${totalAmount.toFixed(2)}`;
+    return `${currency.symbol} ${totalAmount.toFixed(2)}`;
   }
 
   render() {

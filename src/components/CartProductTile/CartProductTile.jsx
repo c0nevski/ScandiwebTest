@@ -8,7 +8,8 @@ class CartProductTile extends Component {
     const productPrice = this.props.product.prices.find(
       (price) => price.currency === this.props.currency.selectedCurrency
     );
-    return `${productPrice.currency} ${productPrice.amount}`;
+    const currency = this.props.currency.list.find(c => c.name === this.props.currency.selectedCurrency);
+    return `${currency.symbol} ${productPrice.amount}`;
   };
 
   adjustQuantity = (value) => {

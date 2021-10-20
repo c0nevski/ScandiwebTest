@@ -60,7 +60,7 @@ export const selectCurrency = (currency) => {
 // CATEGORIES
 export const setCategories = (categories) => {
   return {
-    type: actionTypes.SET_CATEGORIES_AND_PRODUCTS,
+    type: actionTypes.SET_CATEGORIES,
     payload: categories,
   };
 };

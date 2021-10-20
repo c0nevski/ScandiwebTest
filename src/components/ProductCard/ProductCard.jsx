@@ -8,7 +8,8 @@ class ProductCard extends Component {
 
   productPrice = () => {
     const productPrice = this.props.product.prices.find(price => price.currency === this.props.currency.selectedCurrency);
-    return `${productPrice.currency} ${productPrice.amount}`;
+    const currentCurrency = this.props.currency.list.find(c => c.name === this.props.currency.selectedCurrency);
+    return `${currentCurrency.symbol} ${productPrice.amount}`;
   }
 
   render() {

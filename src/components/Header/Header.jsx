@@ -72,6 +72,11 @@ class Header extends Component {
     return qty;
   }
 
+  getCurrencySymbol = () => {
+    const selectedCurrency = this.props.currency?.list?.find(c => c.name === this.props.currency?.selectedCurrency);
+    return selectedCurrency?.symbol;
+  }
+
   render() {
     const { currency, categories } = this.props;
     return (
@@ -92,7 +97,6 @@ class Header extends Component {
                   </NavLink>
                 );
               })}
-              {/* <Link to="/404" className="header__item">404</Link> */}
             </div>
             <div className="header__logo">
               <Link to="/">
@@ -104,7 +108,7 @@ class Header extends Component {
                 onClick={() => this.openCurrency()}
                 className="header__action-item currency-dropdown"
               >
-                {currency.selectedCurrency}
+                {this.getCurrencySymbol()}
                 <span className="material-icons-outlined">
                   {currency.isOpen ? "expand_less" : "expand_more"}
                 </span>

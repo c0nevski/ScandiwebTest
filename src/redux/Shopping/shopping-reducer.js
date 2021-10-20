@@ -4,7 +4,6 @@ import _ from "lodash";
 // MOCK PRODUCT DATA
 const INITIAL_STATE = {
   categories: [],
-  products: [],
   cart: {
     priceTotal: 0,
     products: [],
@@ -15,27 +14,34 @@ const INITIAL_STATE = {
     selectedCurrency: "",
     isOpen: false,
   },
-  currentItem: null,
 };
 
 const shopReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case actionTypes.SET_CATEGORIES_AND_PRODUCTS:
+    case actionTypes.SET_CATEGORIES:
       const cats = action.payload.map((cat) => {
         return { name: cat.name };
       });
-      const products = action.payload.map((cat) => cat.products).flat();
       return {
         ...state,
         categories: [...cats],
-        products: [...products],
       };
     case actionTypes.SET_CURRENCIES:
+      // This should come from an API in the future if more currencies are added.
+      const currencySymbols = [
+        { name: "USD", symbol: "$" },
+        { name: "JPY", symbol: "¥" },
+        { name: "AUD", symbol: "$" },
+        { name: "GBP", symbol: "£" },
+        { name: "RUB", symbol: "₽" },
+      ];
       return {
         ...state,
         currency: {
           ...state.currency,
-          list: action.payload,
+          list: action.payload.map(c => {
+            return currencySymbols.find(currency => currency.name === c);
+          }),
           selectedCurrency: action.payload[0],
         },
       };
@@ -45,7 +51,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
       // Check if item is already in cart
       const inCart = state.cart.products.find((item) => {
         const equalId = item.id === product.id;
-        const equalAttributes = _.isEqual(item.attributes,product.attributes);
+        const equalAttributes = _.isEqual(item.attributes, product.attributes);
         // product in cart === payload product
         if (equalId && equalAttributes) {
           return true;
@@ -60,19 +66,35 @@ const shopReducer = (state = INITIAL_STATE, action) => {
           ...state.cart,
           products: inCart
             ? state.cart.products.map((p) =>
-                _.isEqual(p.attributes, product.attributes) ? { ...p, qty: p.qty + 1 } : p
+                _.isEqual(p.attributes, product.attributes)
+                  ? { ...p, qty: p.qty + 1 }
+                  : p
               )
             : [...state.cart.products, { ...product, qty: 1 }],
         },
       };
     case actionTypes.UPDATE_ATTRIBUTES_IN_CART:
-      const updatedCartProducts = state.cart.products.map(prod => {
-        const findProduct = _.isEqual(prod.attributes, action.payload.oldProduct.attributes);
+      const updatedCartProducts = state.cart.products.map((prod) => {
+        const findProduct = _.isEqual(
+          prod.attributes,
+          action.payload.oldProduct.attributes
+        );
+        const mergeProducts = _.isEqual(
+          prod.attributes,
+          action.payload.newProduct.attributes
+        );
         console.log(findProduct);
-        if( findProduct ) {
-          return action.payload.newProduct;
+        if (mergeProducts) {
+          return {
+            ...action.payload.newProduct,
+            qty: action.payload.newProduct.qty + prod.qty,
+          };
         } else {
-          return prod;
+          if (findProduct) {
+            return action.payload.newProduct;
+          } else {
+            return prod;
+          }
         }
       });
       // Update attributes
@@ -88,16 +110,22 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         ...state,
         cart: {
           ...state.cart,
-          products: state.cart.products.filter(p => !_.isEqual(p, action.payload.product) ),
-        }
+          products: state.cart.products.filter(
+            (p) => !_.isEqual(p, action.payload.product)
+          ),
+        },
       };
     case actionTypes.ADJUST_QTY:
       return {
         ...state,
         cart: {
           ...state.cart,
-          products: state.cart.products.map(p => _.isEqual(p, action.payload.product) ? { ...p, qty: action.payload.qty } : p),
-        }
+          products: state.cart.products.map((p) =>
+            _.isEqual(p, action.payload.product)
+              ? { ...p, qty: action.payload.qty }
+              : p
+          ),
+        },
       };
     case actionTypes.TOGGLE_CART:
       return {

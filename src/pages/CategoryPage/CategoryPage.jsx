@@ -34,7 +34,6 @@ class CategoryPage extends Component {
         isLoading: false,
       });
     }
-    console.log(this.state);
   };
 
   render() {

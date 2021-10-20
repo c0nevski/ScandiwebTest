@@ -15,11 +15,11 @@ export class CurrencySwitcher extends Component {
         {this.props.currency.list.map((c) => {
           return (
             <li
-              key={c}
-              onClick={() => this.props.selectCurrency(c)}
+              key={c.name}
+              onClick={() => this.props.selectCurrency(c.name)}
               className="currency-menu__item"
             >
-              {c}
+              {`${c.symbol} ${c.name}`}
             </li>
           );
         })}

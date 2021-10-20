@@ -115,11 +115,11 @@ class ProductPage extends Component {
   };
 
   displayProductPrice = () => {
-    const currency = this.props.currency.selectedCurrency;
+    const currency = this.props.currency.list.find(c => c.name === this.props.currency.selectedCurrency);
     const price = this.state.product.prices.find(
-      (price) => price.currency === currency
+      (price) => price.currency === this.props.currency.selectedCurrency
     );
-    return `${currency} ${price.amount}`;
+    return `${currency.symbol} ${price.amount}`;
   };
 
   render() {

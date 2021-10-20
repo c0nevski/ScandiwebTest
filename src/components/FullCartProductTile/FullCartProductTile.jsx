@@ -13,7 +13,8 @@ class FullCartProductTile extends Component {
     const productPrice = this.props.product.prices.find(
       (price) => price.currency === this.props.currency.selectedCurrency
     );
-    return `${productPrice.currency} ${productPrice.amount}`;
+    const currency = this.props.currency.list.find(c => c.name === this.props.currency.selectedCurrency);
+    return `${currency.symbol} ${productPrice.amount}`;
   };
 
   selectProductAttribute = (attributeId, selectedValue) => {
@@ -40,9 +41,9 @@ class FullCartProductTile extends Component {
 
   adjustQuantity = (value) => {
     if(value <= 0) {
-      this.removeFromCart(this.state.product.id);
+      this.removeFromCart(this.state.product);
     } else {
-      this.props.adjustQty(this.state.product.id, value);
+      this.props.adjustQty(this.state.product, value);
       this.setState({
         product: {...this.state.product, qty: value}
       });
@@ -51,8 +52,8 @@ class FullCartProductTile extends Component {
 
 
 
-  removeFromCart = (productID) => {
-    this.props.removeFromCart(productID);
+  removeFromCart = (product) => {
+    this.props.removeFromCart(product);
   }
   
 
@@ -139,8 +140,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updateProductAttributesInCart: (product, oldProduct) => dispatch(updateAttributesInCart(product, oldProduct)),
-    adjustQty: (productID, value) => dispatch(adjustQty(productID, value)),
-    removeFromCart: (productID) => dispatch(removeFromCart(productID)),
+    adjustQty: (product, value) => dispatch(adjustQty(product, value)),
+    removeFromCart: (product) => dispatch(removeFromCart(product)),
   };
 };
 
