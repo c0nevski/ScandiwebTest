@@ -1,4 +1,5 @@
 import * as actionTypes from "./shopping-types";
+import { v4 as uuidv4 } from 'uuid';
 import _ from "lodash";
 
 // MOCK PRODUCT DATA
@@ -45,9 +46,12 @@ const shopReducer = (state = INITIAL_STATE, action) => {
           selectedCurrency: action.payload[0],
         },
       };
+
     case actionTypes.ADD_TO_CART:
       // Get item from payload
       const product = action.payload;
+
+
       // Check if item is already in cart
       const inCart = state.cart.products.find((item) => {
         const equalId = item.id === product.id;
@@ -59,6 +63,8 @@ const shopReducer = (state = INITIAL_STATE, action) => {
           return false;
         }
       });
+
+
       // Add item to cart
       return {
         ...state,
@@ -70,48 +76,62 @@ const shopReducer = (state = INITIAL_STATE, action) => {
                   ? { ...p, qty: p.qty + 1 }
                   : p
               )
-            : [...state.cart.products, { ...product, qty: 1 }],
+            : [...state.cart.products, { ...product, qty: 1, uuid: uuidv4() }],
         },
       };
+
+
+
+
+
     case actionTypes.UPDATE_ATTRIBUTES_IN_CART:
-      const updatedCartProducts = state.cart.products.map((prod) => {
-        const findProduct = _.isEqual(
-          prod.attributes,
-          action.payload.oldProduct.attributes
-        );
-        const mergeProducts = _.isEqual(
-          prod.attributes,
-          action.payload.newProduct.attributes
-        );
-        console.log(findProduct);
-        if (mergeProducts) {
-          return {
-            ...action.payload.newProduct,
-            qty: action.payload.newProduct.qty + prod.qty,
-          };
+
+      // map over products and update
+      const updatedProducts = state.cart.products.map( prod => {
+        if( prod.uuid === action.payload.product.uuid ) {
+          return action.payload.product;
         } else {
-          if (findProduct) {
-            return action.payload.newProduct;
-          } else {
-            return prod;
-          }
+          return prod;
         }
       });
+
+      // const updatedCartProducts = state.cart.products.map((prod) => {
+      //   const findProduct = _.isEqual(
+      //     prod.attributes,
+      //     action.payload.oldProduct.attributes
+      //   );
+      //   console.log(findProduct);
+      //   if (mergeProducts) {
+      //     return {
+      //       ...action.payload.newProduct,
+      //       qty: action.payload.newProduct.qty + prod.qty,
+      //     };
+      //   } else {
+      //     if (findProduct) {
+      //       return action.payload.newProduct;
+      //     } else {
+      //       return prod;
+      //     }
+      //   }
+      // });
       // Update attributes
       return {
         ...state,
         cart: {
           ...state.cart,
-          products: [...updatedCartProducts],
+          products: [...updatedProducts],
         },
       };
+
+
     case actionTypes.REMOVE_FROM_CART:
       return {
         ...state,
         cart: {
           ...state.cart,
           products: state.cart.products.filter(
-            (p) => !_.isEqual(p, action.payload.product)
+            // (p) => !_.isEqual(p, action.payload.product)
+            p => p.uuid !== action.payload.product.uuid
           ),
         },
       };

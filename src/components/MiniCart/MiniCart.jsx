@@ -16,7 +16,7 @@ class MiniCart extends Component {
       return total + (productPrice.amount * qty);
     }, 0);
 
-    return `${currency.symbol} ${totalAmount.toFixed(2)}`;
+    return `${currency?.symbol} ${totalAmount.toFixed(2)}`;
   }
 
   render() {

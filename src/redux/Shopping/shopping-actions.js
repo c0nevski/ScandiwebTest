@@ -16,12 +16,11 @@ export const removeFromCart = (product) => {
   };
 };
 
-export const updateAttributesInCart = (cartProduct, oldProduct) => {
+export const updateAttributesInCart = (cartProduct) => {
   return {
     type: actionTypes.UPDATE_ATTRIBUTES_IN_CART,
     payload: {
-      newProduct: cartProduct,
-      oldProduct: oldProduct,
+      product: cartProduct,
     },
   };
 };

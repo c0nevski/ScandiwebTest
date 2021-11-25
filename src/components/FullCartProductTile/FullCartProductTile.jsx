@@ -31,12 +31,12 @@ class FullCartProductTile extends Component {
 
     const updatedProduct = {...this.state.product, attributes: updatedAttributes};
 
-    this.updateAttributesInCart(updatedProduct, this.state.product);
+    this.updateAttributesInCart(updatedProduct);
     this.setState({ product: updatedProduct });
   };
 
-  updateAttributesInCart = (product, oldProduct) => {
-    this.props.updateProductAttributesInCart(product, oldProduct);
+  updateAttributesInCart = (product) => {
+    this.props.updateProductAttributesInCart(product);
   }
 
   adjustQuantity = (value) => {
@@ -139,7 +139,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateProductAttributesInCart: (product, oldProduct) => dispatch(updateAttributesInCart(product, oldProduct)),
+    updateProductAttributesInCart: (product) => dispatch(updateAttributesInCart(product)),
     adjustQty: (product, value) => dispatch(adjustQty(product, value)),
     removeFromCart: (product) => dispatch(removeFromCart(product)),
   };
