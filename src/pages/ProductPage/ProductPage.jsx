@@ -4,7 +4,6 @@ import { addToCart } from "../../redux/Shopping/shopping-actions";
 import { withRouter } from "react-router";
 import parse from "html-react-parser";
 import { Loader } from "../../components";
-import { toast } from "react-toastify";
 import "./ProductPage.scss";
 import { getProductByIdQuery } from "../../graphQL/graphql-queries";
 import { GraphqlClientContext } from "../../graphQL/graphql-context";
@@ -67,22 +66,23 @@ class ProductPage extends Component {
   };
 
   showBannerNotification = (text, type) => {
-    const toastOptions = {
-      position: "top-right",
-      pauseOnFocusLoss: false,
-      pauseOnHover: false,
-      closeOnClick: true,
-      autoClose: 3000,
-      theme: "colored",
-      closeButton: false,
-      hideProgressBar: true,
-    };
+    const notificationWrapper = document.querySelector(".custom-notification");
+    
     switch (type) {
       case "warning":
-        toast.warning(text, toastOptions);
+        notificationWrapper.querySelector('.custom-notification__text').innerHTML = text;
+        notificationWrapper.classList.add("custom-notification--open", "custom-notification--error");
+        setTimeout(function () {
+          notificationWrapper.classList.remove('custom-notification--open');
+          notificationWrapper.classList.remove('custom-notification--error');
+        }, 2500);
         break;
       case "success":
-        toast.success(text, toastOptions);
+        notificationWrapper.querySelector('.custom-notification__text').innerHTML = text;
+        notificationWrapper.classList.add("custom-notification--open");
+        setTimeout(function () {
+          notificationWrapper.classList.remove('custom-notification--open');
+        }, 2500);
         break;
       default:
         break;
@@ -115,7 +115,9 @@ class ProductPage extends Component {
   };
 
   displayProductPrice = () => {
-    const currency = this.props.currency.list.find(c => c.name === this.props.currency.selectedCurrency);
+    const currency = this.props.currency.list.find(
+      (c) => c.name === this.props.currency.selectedCurrency
+    );
     const price = this.state.product.prices.find(
       (price) => price.currency === this.props.currency.selectedCurrency
     );

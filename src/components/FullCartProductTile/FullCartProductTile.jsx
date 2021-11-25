@@ -7,6 +7,7 @@ class FullCartProductTile extends Component {
 
   state = {
     product: this.props.product,
+    image: this.props.product.gallery[0],
   };
 
   productPrice = () => {
@@ -54,6 +55,13 @@ class FullCartProductTile extends Component {
 
   removeFromCart = (product) => {
     this.props.removeFromCart(product);
+  }
+
+  swapGalleryImage = () => {
+    const imagesCount = this.props.product.gallery.length;
+    this.setState({
+      image: this.props.product.gallery
+    });
   }
   
 
@@ -120,7 +128,7 @@ class FullCartProductTile extends Component {
                 </button>
               </div>
               <div className="col col--image full-cart-tile__image">
-                <img src={product.gallery[0]} alt={product.name} />
+                <img src={this.state.image} alt={product.name} />
               </div>
             </div>
           </div>

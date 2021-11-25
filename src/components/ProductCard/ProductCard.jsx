@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "./ProductCard.scss";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { addToCart } from "../../redux/Shopping/shopping-actions";
 
 class ProductCard extends Component {
 
@@ -10,6 +11,15 @@ class ProductCard extends Component {
     const productPrice = this.props.product.prices.find(price => price.currency === this.props.currency.selectedCurrency);
     const currentCurrency = this.props.currency.list.find(c => c.name === this.props.currency.selectedCurrency);
     return `${currentCurrency.symbol} ${productPrice.amount}`;
+  }
+
+  addToCartDefault = e => {
+    e.stopPropagation();
+    e.preventDefault();
+    const productToCart = {
+      ...this.props.product,
+    };
+    this.props.addToCart(productToCart);
   }
 
   render() {
@@ -25,7 +35,7 @@ class ProductCard extends Component {
           )}
           {product.inStock && (
             <div
-              className="product-card__btn"
+              className="product-card__btn" onClick={this.addToCartDefault}
             >
               <span className="material-font material-icons-outlined">
                 shopping_cart
@@ -50,4 +60,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ProductCard);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (product) => dispatch(addToCart(product)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductCard);

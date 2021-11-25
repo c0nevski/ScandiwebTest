@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { SunspotLoader } from "react-awesome-loaders";
+import logo from "../../assets/logo-x512.png";
 import "./Loader.scss";
 
 class Loader extends Component {
   render() {
     return (
       <div className="loader">
-          <SunspotLoader className="loader__animation" gradientColors={["#5ece7b", "teal"]} />
+          <img src={logo} alt="storefront logo" />
       </div>
     );
   }

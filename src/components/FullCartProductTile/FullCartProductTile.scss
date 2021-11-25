@@ -115,6 +115,7 @@
     min-height: 180px;
     display: flex;
     align-items: center;
+    position: relative;
 
     img {
       width: 100%;
@@ -122,5 +123,29 @@
       object-fit: contain;
       box-shadow: 0 0 3px gainsboro;
     }
+
+  //   &::before {
+  //     content: '<';
+  //     position: absolute;
+  //     left: 0;
+  //     top: 50%;
+  //     transform: translateY(-50%);
+  //     z-index: 999999;
+  //     font-weight: bold;
+  //     font-size: 30px;
+  //     cursor: pointer;
+  // }
+  
+  // &::after {
+  //     content: '>';
+  //     position: absolute;
+  //     right: 0;
+  //     top: 50%;
+  //     transform: translateY(-50%);
+  //     z-index: 9999999;
+  //     font-weight: bold;
+  //     font-size: 30px;
+  //     cursor: pointer;
+  // }
   }
 }

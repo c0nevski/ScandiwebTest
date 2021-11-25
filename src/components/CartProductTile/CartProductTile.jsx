@@ -23,6 +23,12 @@ class CartProductTile extends Component {
     }
   }
 
+  checkAttributes = () => {
+    return this.state.attributes.every(
+      (att) => att.selectedVal != null
+    );
+  }
+
   removeFromCart = (productID) => {
     this.props.removeFromCart(productID);
   }
@@ -47,7 +53,13 @@ class CartProductTile extends Component {
                         <li>
                           <span>{att.name}</span>
                           <br />
-                          {att.type === 'swatch' ? <div style={{ backgroundColor: `${ att.items.find(i => i.displayValue === att.selectedVal).value }` }} className="option--swatch"></div> : <strong>{att.selectedVal}</strong>}
+                          {
+                          att.selectedVal !== null &&
+                              (att.type === 'swatch' ? <div style={{ backgroundColor: `${ att.items.find(i => i.displayValue === att.selectedVal).value }` }} className="option--swatch"></div> : <strong>{att.selectedVal}</strong>)
+                            
+                          }
+
+                          { att.selectedVal == null && (<small>Not selected.</small>) }
                         </li>
                       </ul>
                     </div>

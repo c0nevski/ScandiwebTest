@@ -15,6 +15,7 @@ import {
   toggleCart,
   toggleCurrency,
 } from "./redux/Shopping/shopping-actions";
+import BannerNotification from "./components/BannerNotfication/BannerNotification";
 
 class App extends Component {
   static contextType = GraphqlClientContext;
@@ -84,6 +85,7 @@ class App extends Component {
             </Switch>
           )}
           <Footer />
+          <BannerNotification/>
         </div>
       </div>
     );
