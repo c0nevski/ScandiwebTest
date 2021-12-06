@@ -144,7 +144,7 @@ class ProductPage extends Component {
     });
   };
 
-  displayProductAttributes = ({ attributes }) => {
+  displayProductAttributes = ( attributes ) => {
     return attributes.map((attrib) => {
       return (
         <div key={attrib.id} className="product-info__attributes">
@@ -230,7 +230,7 @@ class ProductPage extends Component {
         </div>
         <div className="product-page__product-info">
           <div className="product-info__name">{this.state.product.name}</div>
-          {this.displayProductAttributes(this.state.product)}
+          {this.displayProductAttributes(this.state.attributes)}
           <div className="product-info__price">
             <h3 className="price__label">Price:</h3>
             <h3 className="price__amount">{this.displayProductPrice()}</h3>

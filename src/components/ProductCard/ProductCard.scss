@@ -46,6 +46,62 @@
     }
   }
 
+  &__attributes {
+    width: 100%;
+    height: 300px;
+    background-color: #00000005;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    .back-btn {
+      background-color: unset;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .add-btn {
+      background-color: var(--c-primary);
+      color: white;
+      font-weight: bold;
+      border: none;
+      padding: 10px 15px;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+
+    .product-info__attributes {
+      padding: 0 15px;
+
+      .attributes__title,
+      .attributes__options {
+        text-align: center;
+      }
+
+      .attributes__options .option {
+        background-color: white;
+        border: 0.5px solid var(--c-text);
+        margin-right: 5px;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+      }
+
+      .attributes__options .option.option--swatch {
+        height: 20px;
+        width: 40px;
+      }
+
+      .attributes__options .option.option--selected {
+        color: #fff;
+        background-color: var(--c-text);
+      }
+    }
+  }
+
   &__name {
     font-size: 18px;
     font-weight: 300;
