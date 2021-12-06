@@ -1,5 +1,5 @@
 import * as actionTypes from "./shopping-types";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 
 // MOCK PRODUCT DATA
@@ -40,8 +40,8 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currency: {
           ...state.currency,
-          list: action.payload.map(c => {
-            return currencySymbols.find(currency => currency.name === c);
+          list: action.payload.map((c) => {
+            return currencySymbols.find((currency) => currency.name === c);
           }),
           selectedCurrency: action.payload[0],
         },
@@ -50,7 +50,6 @@ const shopReducer = (state = INITIAL_STATE, action) => {
     case actionTypes.ADD_TO_CART:
       // Get item from payload
       const product = action.payload;
-
 
       // Check if item is already in cart
       const inCart = state.cart.products.find((item) => {
@@ -63,7 +62,6 @@ const shopReducer = (state = INITIAL_STATE, action) => {
           return false;
         }
       });
-
 
       // Add item to cart
       return {
@@ -80,40 +78,16 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         },
       };
 
-
-
-
-
     case actionTypes.UPDATE_ATTRIBUTES_IN_CART:
-
       // map over products and update
-      const updatedProducts = state.cart.products.map( prod => {
-        if( prod.uuid === action.payload.product.uuid ) {
+      const updatedProducts = state.cart.products.map((prod) => {
+        if (prod.uuid === action.payload.product.uuid) {
           return action.payload.product;
         } else {
           return prod;
         }
       });
 
-      // const updatedCartProducts = state.cart.products.map((prod) => {
-      //   const findProduct = _.isEqual(
-      //     prod.attributes,
-      //     action.payload.oldProduct.attributes
-      //   );
-      //   console.log(findProduct);
-      //   if (mergeProducts) {
-      //     return {
-      //       ...action.payload.newProduct,
-      //       qty: action.payload.newProduct.qty + prod.qty,
-      //     };
-      //   } else {
-      //     if (findProduct) {
-      //       return action.payload.newProduct;
-      //     } else {
-      //       return prod;
-      //     }
-      //   }
-      // });
       // Update attributes
       return {
         ...state,
@@ -123,7 +97,6 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         },
       };
 
-
     case actionTypes.REMOVE_FROM_CART:
       return {
         ...state,
@@ -131,7 +104,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
           ...state.cart,
           products: state.cart.products.filter(
             // (p) => !_.isEqual(p, action.payload.product)
-            p => p.uuid !== action.payload.product.uuid
+            (p) => p.uuid !== action.payload.product.uuid
           ),
         },
       };

@@ -18,17 +18,21 @@ class CartPage extends Component {
     return `${currency} ${totalAmount.toFixed(2)}`;
   };
 
-  render() {
-    const { cart } = this.props;
+  displayProductTiles = (products) => {
+    return products.map((product, index) => {
+      return <FullCartProductTile key={`${product.id}-${index}`} product={product} />;
+    });
+  }
 
-    if (cart.products.length === 0) return <EmptyCart />;
+  render() {
+    const { products } = this.props.cart;
+
+    if (products.length === 0) return <EmptyCart />;
 
     return (
       <section className="cart-page">
         <h2 className="cart-page__title">Cart</h2>
-        {cart.products.map((product, index) => {
-          return <FullCartProductTile key={`${product.id}-${index}`} product={product} />;
-        })}
+        {this.displayProductTiles(products)}
         <div className="cart-page__total">
           <button className="cart-page__checkout cart-page__checkout--btn">
             CHECKOUT

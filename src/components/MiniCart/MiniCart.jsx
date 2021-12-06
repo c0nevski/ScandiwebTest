@@ -19,27 +19,25 @@ class MiniCart extends Component {
     return `${currency?.symbol} ${totalAmount.toFixed(2)}`;
   }
 
+  displayMinicartProductTiles = (cart) => {
+    return cart.products.map((product, index) => {
+      return <CartProductTile key={`${product.id}-${index}`} product={product} />;
+    });
+  }
+
   render() {
+    const {cart, refs, toggleCart} = this.props;
     return (
-      <div
-      ref={this.props.refs}
-        className={`cart-dropdown__cart-menu ${
-          this.props.cart.isOpen ? "cart-dropdown__cart-menu--open" : ""
-        }`}
-      >
-        <h2>
-          <strong>My Bag,</strong> {this.props.cart.products.length} items
-        </h2>
-        { this.props.cart.products.length === 0 && <img src={iconEmptyCart} className="empty-cart-icon" alt="Your cart is empty." /> }
-        {this.props.cart.products.map((product, index) => {
-          return <CartProductTile key={`${product.id}-${index}`} product={product} />;
-        })}
+      <div ref={refs} className={`cart-dropdown__cart-menu ${cart.isOpen ? "cart-dropdown__cart-menu--open" : ""}`}>
+        <h2><strong>My Bag,</strong> {cart.products.length} items</h2>
+        { cart.products.length === 0 && <img src={iconEmptyCart} className="empty-cart-icon" alt="Your cart is empty." /> }
+        {this.displayMinicartProductTiles(cart)}
         <div className="cart-menu__total">
           <span>Total</span>
           <span className="price-bold">{this.getCartTotal()}</span>
         </div>
         <div className="cart-menu__buttons">
-          <Link to="/cart" onClick={() => this.props.toggleCart()} className="btn btn--view-bag">View bag</Link>
+          <Link to="/cart" onClick={() => toggleCart()} className="btn btn--view-bag">View bag</Link>
           <button className="btn btn--checkout">Checkout</button>
         </div>
       </div>

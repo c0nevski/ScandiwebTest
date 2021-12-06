@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { GraphqlClientContext } from "./graphQL/graphql-context";
-import {
-  categoriesQuery,
-  currenciesQuery,
-} from "./graphQL/graphql-queries";
+import { categoriesQuery, currenciesQuery } from "./graphQL/graphql-queries";
 import { Footer, Header, Loader, NoProductsFound } from "./components";
 import "./App.scss";
 import { CartPage, CategoryPage, PageNotFound, ProductPage } from "./pages";
@@ -47,45 +44,43 @@ class App extends Component {
     }
   };
 
+  renderCategoriesRoutes = (categories) => {
+    return categories.map((cat) => {
+      return (
+        <Route key={`${cat.name}-route`} path={`/${cat.name}`}>
+          <CategoryPage categoryName={cat.name} />
+        </Route>
+      );
+    });
+  };
+
   render() {
     const { categories, cart } = this.props;
 
     if (this.state.isLoading) return <Loader />;
+    if (categories.length === 0) return <NoProductsFound />;
+
     return (
       <div className="app">
         <Header />
-        <div
-          className={`app__container ${
-            cart.isOpen ? "app__container--cart-open" : ""
-          }`}
-        >
-          {categories.length === 0 ? (
-            <NoProductsFound />
-          ) : (
-            <Switch>
-              <Route exact path="/">
-                <Redirect to={`/${categories[0].name}`} />
-              </Route>
-              {categories.map((cat) => {
-                return (
-                  <Route key={`${cat.name}-route`} path={`/${cat.name}`}>
-                    <CategoryPage categoryName={cat.name} />
-                  </Route>
-                );
-              })}
-              <Route path="/product/:id">
-                <ProductPage />
-              </Route>
-              <Route path="/cart">
-                <CartPage />
-              </Route>
-              <Route>
-                <PageNotFound />
-              </Route>
-            </Switch>
-          )}
+        <div className={`app__container ${cart.isOpen ? "app__container--cart-open" : ""}`}>
+          <Switch>
+            <Route exact path="/">
+              <Redirect to={`/${categories[0].name}`} />
+            </Route>
+            {this.renderCategoriesRoutes(categories)}
+            <Route path="/product/:id">
+              <ProductPage />
+            </Route>
+            <Route path="/cart">
+              <CartPage />
+            </Route>
+            <Route>
+              <PageNotFound />
+            </Route>
+          </Switch>
           <Footer />
-          <BannerNotification/>
+          <BannerNotification />
         </div>
       </div>
     );

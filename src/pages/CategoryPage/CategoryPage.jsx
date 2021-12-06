@@ -36,16 +36,21 @@ class CategoryPage extends Component {
     }
   };
 
+  displayProductCards = (products) => {
+    return products?.map((product) => {
+      return <ProductCard key={product.id} product={product} />;
+    });
+  }
+
   render() {
     const { categoryName } = this.props;
-    if(this.state.category === null) return <Loader />;
+    const { category } = this.state;
+    if(category === null) return <Loader />;
     return (
       <section className="category-page">
         <h2 className="category-page__title">{categoryName}</h2>
         <div className="category-page__products">
-          {this.state.category.products?.map((product) => {
-            return <ProductCard key={product.id} product={product} />;
-          })}
+          {this.displayProductCards(category.products)}
         </div>
       </section>
     );

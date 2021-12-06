@@ -4,6 +4,21 @@ import { selectCurrency } from '../../redux/Shopping/shopping-actions';
 import './CurrencySwitcher.scss';
 
 export class CurrencySwitcher extends Component {
+
+  displayCurrencyList = ({currency, selectCurrency}) => {
+    return currency.list.map((c) => {
+      return (
+        <li
+          key={c.name}
+          onClick={() => selectCurrency(c.name)}
+          className="currency-menu__item"
+        >
+          {`${c.symbol} ${c.name}`}
+        </li>
+      );
+    });
+  }
+
   render() {
     return (
       <ul
@@ -12,17 +27,7 @@ export class CurrencySwitcher extends Component {
           this.props.currency.isOpen ? "currency-dropdown__currency-menu--open" : ""
         }`}
       >
-        {this.props.currency.list.map((c) => {
-          return (
-            <li
-              key={c.name}
-              onClick={() => this.props.selectCurrency(c.name)}
-              className="currency-menu__item"
-            >
-              {`${c.symbol} ${c.name}`}
-            </li>
-          );
-        })}
+        {this.displayCurrencyList(this.props)}
       </ul>
     );
   }

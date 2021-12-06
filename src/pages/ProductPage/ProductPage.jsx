@@ -67,21 +67,28 @@ class ProductPage extends Component {
 
   showBannerNotification = (text, type) => {
     const notificationWrapper = document.querySelector(".custom-notification");
-    
+
     switch (type) {
       case "warning":
-        notificationWrapper.querySelector('.custom-notification__text').innerHTML = text;
-        notificationWrapper.classList.add("custom-notification--open", "custom-notification--error");
+        notificationWrapper.querySelector(
+          ".custom-notification__text"
+        ).innerHTML = text;
+        notificationWrapper.classList.add(
+          "custom-notification--open",
+          "custom-notification--error"
+        );
         setTimeout(function () {
-          notificationWrapper.classList.remove('custom-notification--open');
-          notificationWrapper.classList.remove('custom-notification--error');
+          notificationWrapper.classList.remove("custom-notification--open");
+          notificationWrapper.classList.remove("custom-notification--error");
         }, 2500);
         break;
       case "success":
-        notificationWrapper.querySelector('.custom-notification__text').innerHTML = text;
+        notificationWrapper.querySelector(
+          ".custom-notification__text"
+        ).innerHTML = text;
         notificationWrapper.classList.add("custom-notification--open");
         setTimeout(function () {
-          notificationWrapper.classList.remove('custom-notification--open');
+          notificationWrapper.classList.remove("custom-notification--open");
         }, 2500);
         break;
       default:
@@ -124,6 +131,90 @@ class ProductPage extends Component {
     return `${currency.symbol} ${price.amount}`;
   };
 
+  displayProductGalleryThumbnails = (product) => {
+    return product.gallery.map((image, index) => {
+      return (
+        <img
+          key={`${product.id}-image-${index}`}
+          onClick={() => this.selectProductImage(image)}
+          src={image}
+          alt={product.name}
+        />
+      );
+    });
+  };
+
+  displayProductAttributes = ({ attributes }) => {
+    return attributes.map((attrib) => {
+      return (
+        <div key={attrib.id} className="product-info__attributes">
+          <div className="attributes__title">{attrib.name}:</div>
+          <div className="attributes__options">
+            {attrib.items.map((item) => {
+              if (attrib.type === "swatch") {
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() =>
+                      this.selectProductAttribute(attrib.id, item.displayValue)
+                    }
+                    className={`option option--swatch ${
+                      attrib.selectedVal === item.displayValue
+                        ? "option--selected"
+                        : ""
+                    }`}
+                    style={{
+                      backgroundColor: `${item.value}`,
+                      opacity: `${
+                        attrib.selectedVal === item.displayValue ? "1" : "0.3"
+                      }`,
+                    }}
+                  ></button>
+                );
+              }
+              return (
+                <button
+                  key={item.id}
+                  onClick={() =>
+                    this.selectProductAttribute(attrib.id, item.displayValue)
+                  }
+                  className={`option ${
+                    attrib.selectedVal === item.displayValue
+                      ? "option--selected"
+                      : ""
+                  }`}
+                >
+                  {item.displayValue}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      );
+    });
+  };
+
+  displayAddToCartBtn = (product) => {
+    if (product.inStock) {
+      return (
+        <button
+          onClick={() => this.beforeAddToCart()}
+          className="btn-add-to-cart"
+        >
+          ADD TO CART
+        </button>
+      );
+    } else {
+      return (
+        <>
+          <button className="btn-add-to-cart btn-add-to-cart--out-of-stock">
+            OUT OF STOCK
+          </button>
+        </>
+      );
+    }
+  };
+
   render() {
     if (this.state.product === null) return <Loader />;
 
@@ -131,16 +222,7 @@ class ProductPage extends Component {
       <section className="product-page">
         <div className="product-page__gallery">
           <div className="gallery__thumbnails">
-            {this.state.product.gallery.map((image, index) => {
-              return (
-                <img
-                  key={`${this.state.product.id}-image-${index}`}
-                  onClick={() => this.selectProductImage(image)}
-                  src={image}
-                  alt={this.state.product.name}
-                />
-              );
-            })}
+            {this.displayProductGalleryThumbnails(this.state.product)}
           </div>
           <div className="gallery__full-image">
             <img src={this.state.selectedImage} alt="" />
@@ -148,80 +230,13 @@ class ProductPage extends Component {
         </div>
         <div className="product-page__product-info">
           <div className="product-info__name">{this.state.product.name}</div>
-          {this.state.attributes.map((attrib) => {
-            return (
-              <div key={attrib.id} className="product-info__attributes">
-                <div className="attributes__title">{attrib.name}:</div>
-                <div className="attributes__options">
-                  {attrib.items.map((item) => {
-                    if (attrib.type === "swatch") {
-                      return (
-                        <button
-                          key={item.id}
-                          onClick={() =>
-                            this.selectProductAttribute(
-                              attrib.id,
-                              item.displayValue
-                            )
-                          }
-                          className={`option option--swatch ${
-                            attrib.selectedVal === item.displayValue
-                              ? "option--selected"
-                              : ""
-                          }`}
-                          style={{
-                            backgroundColor: `${item.value}`,
-                            opacity: `${
-                              attrib.selectedVal === item.displayValue
-                                ? "1"
-                                : "0.3"
-                            }`,
-                          }}
-                        ></button>
-                      );
-                    }
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() =>
-                          this.selectProductAttribute(
-                            attrib.id,
-                            item.displayValue
-                          )
-                        }
-                        className={`option ${
-                          attrib.selectedVal === item.displayValue
-                            ? "option--selected"
-                            : ""
-                        }`}
-                      >
-                        {item.displayValue}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
+          {this.displayProductAttributes(this.state.product)}
           <div className="product-info__price">
             <h3 className="price__label">Price:</h3>
             <h3 className="price__amount">{this.displayProductPrice()}</h3>
           </div>
           <div className="product-info__add-to-cart">
-            {this.state.product.inStock ? (
-              <button
-                onClick={() => this.beforeAddToCart()}
-                className="btn-add-to-cart"
-              >
-                ADD TO CART
-              </button>
-            ) : (
-              <>
-                <button className="btn-add-to-cart btn-add-to-cart--out-of-stock">
-                  OUT OF STOCK
-                </button>
-              </>
-            )}
+            {this.displayAddToCartBtn(this.state.product)}
           </div>
           <div className="product-info__description">
             {parse(this.state.product.description)}

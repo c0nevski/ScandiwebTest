@@ -22,26 +22,29 @@ class ProductCard extends Component {
     this.props.addToCart(productToCart);
   }
 
+  displayProductCartImage = (product) => {
+    if(product.inStock) {
+      return (<div
+        className="product-card__btn" onClick={this.addToCartDefault}
+      >
+        <span className="material-font material-icons-outlined">
+          shopping_cart
+        </span>
+      </div>);
+    } else {
+      return  (<div className="product-card__image--out-of-stock">
+      <h3>OUT OF STOCK</h3>
+    </div>);
+    }
+  }
+
   render() {
     const { product } = this.props;
     return (
       <Link to={`/product/${product.id}`} className="product-card">
         <div className="product-card__image">
           <img src={product.gallery[0]} alt="product" />
-          {!product.inStock && (
-            <div className="product-card__image--out-of-stock">
-              <h3>OUT OF STOCK</h3>
-            </div>
-          )}
-          {product.inStock && (
-            <div
-              className="product-card__btn" onClick={this.addToCartDefault}
-            >
-              <span className="material-font material-icons-outlined">
-                shopping_cart
-              </span>
-            </div>
-          )}
+          {this.displayProductCartImage(product)}
         </div>
         <h3 className="product-card__name">{product.name}</h3>
         <h3 className="product-card__price">{this.productPrice()}</h3>

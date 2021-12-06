@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { adjustQty, removeFromCart } from "../../redux/Shopping/shopping-actions";
+import {
+  adjustQty,
+  removeFromCart,
+} from "../../redux/Shopping/shopping-actions";
 import "./CartProductTile.scss";
 
 class CartProductTile extends Component {
@@ -8,81 +11,102 @@ class CartProductTile extends Component {
     const productPrice = this.props.product.prices.find(
       (price) => price.currency === this.props.currency.selectedCurrency
     );
-    const currency = this.props.currency.list.find(c => c.name === this.props.currency.selectedCurrency);
+    const currency = this.props.currency.list.find(
+      (c) => c.name === this.props.currency.selectedCurrency
+    );
     return `${currency.symbol} ${productPrice.amount}`;
   };
 
   adjustQuantity = (value) => {
-    if(value <= 0) {
+    if (value <= 0) {
       this.removeFromCart(this.props.product);
     } else {
       this.props.adjustQty(this.props.product, value);
       this.setState({
-        product: {...this.props.product, qty: value}
+        product: { ...this.props.product, qty: value },
       });
     }
-  }
+  };
 
   checkAttributes = () => {
-    return this.state.attributes.every(
-      (att) => att.selectedVal != null
-    );
-  }
+    return this.state.attributes.every((att) => att.selectedVal != null);
+  };
 
   removeFromCart = (productID) => {
     this.props.removeFromCart(productID);
+  };
+
+  displayProductAttributes = (attributes) => {
+    return attributes.map((att) => {
+      return (
+        <div key={att.id} className="product-tile__options">
+          <div className="row">
+            <div className="product-tile__option">
+              <ul>
+                <li>
+                  <span>{att.name}</span>
+                  <br />
+                  {this.renderAttributesOptions(att)}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      );
+    });
   }
 
+  renderAttributesOptions = (att) => {
+    if (att.type === "swatch") {
+      return (
+        <div
+          style={{
+            backgroundColor: `${
+              att.items.find((i) => i.displayValue === att.selectedVal).value
+            }`,
+          }}
+          className="option--swatch"
+        ></div>
+      );
+    } else {
+      return <strong>{att.selectedVal}</strong>;
+    }
+  };
+
   render() {
-    const { product } = this.props;
+    const { brand, name, attributes, qty, gallery } = this.props.product;
     return (
       <div className="product-tile cart-menu__tile">
         <div className="row">
           <div className="col col--left">
             <h4 className="product-tile__name">
-              {product.brand}
-              <br /> {product.name}
+              {brand}
+              <br /> {name}
             </h4>
             <h5 className="product-tile__price">{this.productPrice()}</h5>
-            {product.attributes.map((att) => {
-              return (
-                <div key={att.id} className="product-tile__options">
-                  <div className="row">
-                    <div className="product-tile__option">
-                      <ul>
-                        <li>
-                          <span>{att.name}</span>
-                          <br />
-                          {
-                          att.selectedVal !== null &&
-                              (att.type === 'swatch' ? <div style={{ backgroundColor: `${ att.items.find(i => i.displayValue === att.selectedVal).value }` }} className="option--swatch"></div> : <strong>{att.selectedVal}</strong>)
-                            
-                          }
-
-                          { att.selectedVal == null && (<small>Not selected.</small>) }
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            {this.displayProductAttributes(attributes)}
           </div>
           <div className="col col--right">
             <div className="row">
               <div className="col col--buttons">
-                <button onClick={() => this.adjustQuantity(product.qty + 1)} className="product-tile__btn product-tile__btn--selected">
+                <button
+                  onClick={() => this.adjustQuantity(qty + 1)}
+                  className="product-tile__btn product-tile__btn--selected"
+                >
                   +
                 </button>
-                <span className="product-tile__qty">{product.qty}</span>
-                <button onClick={() => this.adjustQuantity(product.qty - 1)} className="product-tile__btn product-tile__btn--selected">
+                <span className="product-tile__qty">{qty}</span>
+                <button
+                  onClick={() => this.adjustQuantity(qty - 1)}
+                  className="product-tile__btn product-tile__btn--selected"
+                >
                   -
                 </button>
               </div>
               <div
                 className="col col--image"
                 style={{
-                  backgroundImage: `url("${product.gallery[0]}")`,
+                  backgroundImage: `url("${gallery[0]}")`,
                 }}
               ></div>
             </div>

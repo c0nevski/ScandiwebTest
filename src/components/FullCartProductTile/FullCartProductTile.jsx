@@ -96,6 +96,70 @@ class FullCartProductTile extends Component {
     });
   };
 
+  displayProductAttributes = (product) => {
+    return product.attributes.map((attr) => {
+      return (
+        <div key={attr.name} className="full-cart-tile__options">
+          <span className="option__label">{attr.name}</span>
+          <div className="row">
+            {attr.items.map((option) => {
+              if (attr.type === "swatch") {
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() =>
+                      this.selectProductAttribute(
+                        attr.id,
+                        option.displayValue
+                      )
+                    }
+                    style={{
+                      backgroundColor: `${option.value}`,
+                      borderWidth: `${
+                        attr.selectedVal === option.displayValue
+                          ? "3px"
+                          : "1px"
+                      }`,
+                      opacity: `${
+                        attr.selectedVal === option.displayValue
+                          ? "1"
+                          : ".3"
+                      }`,
+                    }}
+                    className={`full-cart-tile__option full-cart-tile__option--swatch ${
+                      attr.selectedVal === option.id
+                        ? "full-cart-tile__option--selected"
+                        : ""
+                    }`}
+                  ></button>
+                );
+              } else {
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() =>
+                      this.selectProductAttribute(
+                        attr.id,
+                        option.displayValue
+                      )
+                    }
+                    className={`full-cart-tile__option ${
+                      attr.selectedVal === option.displayValue
+                        ? "full-cart-tile__option--selected"
+                        : ""
+                    }`}
+                  >
+                    {option.displayValue}
+                  </button>
+                );
+              }
+            })}
+          </div>
+        </div>
+      );
+    });
+  }
+
   render() {
     const { product } = this.props;
     return (
@@ -107,67 +171,7 @@ class FullCartProductTile extends Component {
               <br /> {product.name}
             </h4>
             <h5 className="full-cart-tile__price">{this.productPrice()}</h5>
-            {product.attributes.map((attr) => {
-              return (
-                <div key={attr.name} className="full-cart-tile__options">
-                  <span className="option__label">{attr.name}</span>
-                  <div className="row">
-                    {attr.items.map((option) => {
-                      if (attr.type === "swatch") {
-                        return (
-                          <button
-                            key={option.id}
-                            onClick={() =>
-                              this.selectProductAttribute(
-                                attr.id,
-                                option.displayValue
-                              )
-                            }
-                            style={{
-                              backgroundColor: `${option.value}`,
-                              borderWidth: `${
-                                attr.selectedVal === option.displayValue
-                                  ? "3px"
-                                  : "1px"
-                              }`,
-                              opacity: `${
-                                attr.selectedVal === option.displayValue
-                                  ? "1"
-                                  : ".3"
-                              }`,
-                            }}
-                            className={`full-cart-tile__option full-cart-tile__option--swatch ${
-                              attr.selectedVal === option.id
-                                ? "full-cart-tile__option--selected"
-                                : ""
-                            }`}
-                          ></button>
-                        );
-                      } else {
-                        return (
-                          <button
-                            key={option.id}
-                            onClick={() =>
-                              this.selectProductAttribute(
-                                attr.id,
-                                option.displayValue
-                              )
-                            }
-                            className={`full-cart-tile__option ${
-                              attr.selectedVal === option.displayValue
-                                ? "full-cart-tile__option--selected"
-                                : ""
-                            }`}
-                          >
-                            {option.displayValue}
-                          </button>
-                        );
-                      }
-                    })}
-                  </div>
-                </div>
-              );
-            })}
+            {this.displayProductAttributes(product)}
           </div>
           <div className="col col--right">
             <div className="row">

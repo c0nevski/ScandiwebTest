@@ -7,8 +7,6 @@ import {
   toggleCart,
   toggleCurrency,
 } from "../../redux/Shopping/shopping-actions";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
 import "./Header.scss";
 
 class Header extends Component {
@@ -27,8 +25,6 @@ class Header extends Component {
     document.removeEventListener("mousedown", this.checkIfClickedOutside);
   }
   
-  
-
   checkIfClickedOutside = e => {
     // If the menu is open and the clicked target is not within the menu,
     // then close the menu
@@ -77,26 +73,29 @@ class Header extends Component {
     return selectedCurrency?.symbol;
   }
 
+  displayCategories = (categories) => {
+    return categories.map((cat) => {
+      return (
+        <NavLink
+          key={`header-link-${cat.name}`}
+          to={`/${cat.name}`}
+          className="header__item"
+          activeClassName="header__item--active"
+        >
+          {cat.name}
+        </NavLink>
+      );
+    });
+  }
+
   render() {
     const { currency, categories } = this.props;
     return (
       <>
-        <ToastContainer />
         <header className="header">
           <div className="header__container">
             <div className="header__categories">
-              {categories.map((cat) => {
-                return (
-                  <NavLink
-                    key={`header-link-${cat.name}`}
-                    to={`/${cat.name}`}
-                    className="header__item"
-                    activeClassName="header__item--active"
-                  >
-                    {cat.name}
-                  </NavLink>
-                );
-              })}
+              {this.displayCategories(categories)}
             </div>
             <div className="header__logo">
               <Link to="/">
